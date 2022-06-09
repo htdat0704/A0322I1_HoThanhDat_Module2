@@ -14,7 +14,7 @@ public class BMI {
         double height = inputHeight.nextDouble();
 
         double BMI = weight / (height*height);
-
+        int for1;
         if(BMI < 18.5){
             System.out.printf("Chiều cao %f và cân nặng %f có chỉ số BMI = %f là loại Underweight",
                     height,weight,BMI);
@@ -28,5 +28,10 @@ public class BMI {
             System.out.printf("Chiều cao %f và cân nặng %f có chỉ số BMI = %f là loại Obese",
                     height,weight,BMI);
         }
+
+
+
     }
+
+
 }
