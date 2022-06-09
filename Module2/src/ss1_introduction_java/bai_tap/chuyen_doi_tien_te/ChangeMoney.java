@@ -8,6 +8,7 @@ public class ChangeMoney {
 
         System.out.println("Enter USD:");
         Scanner USDInput = new Scanner(System.in);
+
         int USD = USDInput.nextInt();
         int VND = USD * 23000;
 
