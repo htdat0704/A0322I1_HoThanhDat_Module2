@@ -1,28 +1,26 @@
 public class Test {
-    int rollno;
-    String name;
-    static String college = "BachKhoa";
 
-    static void change() {
-        college = "QuocGia";
+    public static int count_even_numbers (int n) {
+        if(n ==0 ){
+            return 0;
+        }else{
+            if(n%2 ==0){
+                n--;
+                return (1+count_even_numbers(n));
+            }else{
+                n--;
+                return 0+count_even_numbers(n);
+            }
+        }
     }
-
-    Test(int r, String n) {
-        rollno = r;
-        name = n;
-    }
-
-    void display() {
-        System.out.println(rollno + " " + name + " " + college);
-    }
-
     public static void main(String args[]) {
-        Test.change();
-        Test s1 = new Test(111, "Hoang");
-        Test s2 = new Test(222, "Thanh");
-        Test s3 = new Test(333, "Nam");
-        s1.display();
-        s2.display();
-        s3.display();
+
+        System.out.println(count_even_numbers(5));
+
+        
+
+
+
+
     }
 }

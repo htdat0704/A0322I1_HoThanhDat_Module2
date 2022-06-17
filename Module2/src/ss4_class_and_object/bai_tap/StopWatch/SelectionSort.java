@@ -36,6 +36,7 @@ public class SelectionSort {
 
         stopWatch.start();
         obj.sort(arr);
+        stopWatch.stop();
         System.out.println("after Selection Sort 100000 about: "+stopWatch.getElapsedTime()+" mili second");
 
     }
