@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 public class Test {
     public static boolean isPalindrome (String str) {
         int count = 0;
@@ -32,6 +37,13 @@ public class Test {
         System.out.println(s.charAt(1));
 
         System.out.println(count_even_numbers(5));
+
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        list.add(2);
+        list.add(2);
+        list.add(4);
+        list.add(3);
+        Collections.reverse(list);
 
         
 
