@@ -48,7 +48,7 @@ public class MyLinkedList {
         }
     }
 
-    public void remove(Object e){
+    public void removeObject(Object e){
         Node temp = head;
         Node holder = null;
 
@@ -96,7 +96,7 @@ public class MyLinkedList {
     public int indexOf(Object o){
         Node temp = head;
         int position = -1;
-        for(int i =0; i< numbNodes; i++){
+        for(int i =0; i<= numbNodes; i++){
             if(temp.getData().equals(o)){
                 position = i;
                 break;
@@ -118,13 +118,13 @@ public class MyLinkedList {
         numbNodes++;
     }
 
-    public Object get(int index ){
+    public Node get(int index ){
         Node temp = head;
 
         for(int i = 0; i < index; i++){
             temp = temp.next;
         }
-        return temp.getData();
+        return temp;
     }
 
     public Object getFirst(){
@@ -143,6 +143,14 @@ public class MyLinkedList {
         head = null;
     }
 
+    public Node clone(){
+        return head;
+    }
+
+    public void ensureCapacity(int minCapacity){
+        numbNodes = minCapacity;
+    }
+
     public class Node{
         Node next;
         Object data;
@@ -155,5 +163,13 @@ public class MyLinkedList {
             return data;
         }
 
+    }
+
+    public void printList() {
+        Node temp = head;
+        while(temp != null) {
+            System.out.println(temp.data);
+            temp = temp.next;
+        }
     }
 }
