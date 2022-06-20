@@ -48,8 +48,8 @@ public class MyList <E> {
         return size;
     }
 
-    public Object[] clone(){
-        return Arrays.copyOf(elements,size);
+    public MyList<E> clone(){
+        return  this;
     }
 
     public boolean contains(E o){

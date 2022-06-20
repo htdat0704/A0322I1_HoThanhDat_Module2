@@ -143,8 +143,8 @@ public class MyLinkedList {
         head = null;
     }
 
-    public Node clone(){
-        return head;
+    public MyLinkedList clone(){
+        return this;
     }
 
     public void ensureCapacity(int minCapacity){

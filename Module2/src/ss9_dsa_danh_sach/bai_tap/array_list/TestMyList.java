@@ -17,12 +17,12 @@ public class TestMyList {
         //myLists.remove(0);
         myLists.add(2,2323);
         System.out.println(myLists);
-        Object[] newList =myLists.clone();
-        //System.out.println(newList[0]);
-        myLists.add(8);
-        myLists.add(8);
-        System.out.println(myLists);
-        System.out.println(myLists.indexOf(8));
-        System.out.println(myLists.get(2));
+        MyList<Integer> newList =myLists.clone();
+        System.out.println(newList);
+//        myLists.add(8);
+//        myLists.add(8);
+//        System.out.println(myLists);
+//        System.out.println(myLists.indexOf(8));
+//        System.out.println(myLists.get(2));
     }
 }

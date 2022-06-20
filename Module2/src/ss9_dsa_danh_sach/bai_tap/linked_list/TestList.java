@@ -21,7 +21,8 @@ public class TestList {
 //        System.out.println(ll.getLast());
 //        ll.clear();
 //        ll.printList();
-//        MyLinkedList.Node newll = ll.clone();
+        MyLinkedList newll = ll.clone();
+        newll.printList();
 
     }
 }
