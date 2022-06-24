@@ -2,9 +2,9 @@ package ss9_dsa_danh_sach.thuc_hanh.LinkedList;
 
 public class MyLinkedList {
     private Node head;
-    private int numbNodes;
+    private int numbsNode = 0;
 
-    public MyLinkedList(Object o){
+    public void MyLinkedList(Object o){
         head = new Node(o);
     }
 
@@ -12,51 +12,39 @@ public class MyLinkedList {
         private Node next;
         private Object data;
 
+        public Object getData() {
+            return data;
+        }
+
         public Node(Object o){
             this.data = o;
         }
-
-        public Object getData(){
-            return this.data;
-        }
     }
 
-    public Node get(int index){
+    public boolean contains(Object o){
         Node temp = head;
-        for(int i = 0; i<index; i++){
+        for(int i=0; i<= numbsNode; i++){
+            if(temp.getData().equals(o)){
+                return true;
+            }
             temp = temp.next;
         }
-        return temp;
+        return false;
     }
 
-    public void addFirst(Object o){
+    public void  addLast (Object o){
         Node temp = head;
+        for(int i =0; i< numbsNode; i++){
+            temp= temp.next;
+        }
+        temp.next = new Node(o);
+        numbsNode++;
+    }
+
+    public void addFirst (Object o){
+        Node temp = head.next;
         head = new Node(o);
         head.next = temp;
-        numbNodes++;
+        numbsNode++;
     }
-
-    public void add(int index, Object o){
-        Node temp = head;
-        Node holder;
-
-        for(int i =0; i < index-1 && temp.next!= null; i++){
-            temp = temp.next;
-        }
-
-        holder = temp.next;
-        temp.next = new Node(o);
-        temp.next.next = holder;
-        numbNodes++;
-    }
-
-    public void printList() {
-        Node temp = head;
-        while(temp != null) {
-            System.out.println(temp.data);
-            temp = temp.next;
-        }
-    }
-
-
 }

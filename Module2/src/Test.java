@@ -1,51 +1,38 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 public class Test {
-    public static boolean isPalindrome (String str) {
-        int count = 0;
-        for(int i =0; i< str.length()/2; i++){
-            if(str.charAt(i)==str.charAt(str.length()-1-i)){
-                count ++;
-            }
-        }
-        if(count == str.length()/2){
-            return true;
-        }else{
-            return false;
-        }
-    }
 
-    public static int count_even_numbers (int n) {
-        if(n ==0 ){
-            return 0;
-        }else{
-            if(n%2 ==0){
-                n--;
-                return (1+count_even_numbers(n));
+    public static LinkedList<String> compare_two_linked_lists (LinkedList<String> linkedList1,LinkedList<String> linkedList2) {
+        int loop = Math.max(linkedList1.size(), linkedList2.size());
+        LinkedList<String> linkedListNew = new LinkedList<String>();
+        for(int i = 0; i < loop; i++){
+            if(linkedList1.get(i).equals(linkedList2.get(i))){
+                linkedListNew.add("YES");
             }else{
-                n--;
-                return 0+count_even_numbers(n);
+                linkedListNew.add("NO");
             }
         }
+        return linkedListNew;
     }
+
     public static void main(String args[]) {
-        System.out.println(isPalindrome("abba"));
-        String s = "23";
-        System.out.println(s.charAt(1));
 
-        System.out.println(count_even_numbers(5));
+        LinkedList<String> linkedList1 = new LinkedList<>();
+        linkedList1.add("Java");
+        linkedList1.add("PHP");
+        linkedList1.add("Python");
+        linkedList1.add("Ruby");
 
-        ArrayList<Integer> list = new ArrayList<Integer>();
-        list.add(2);
-        list.add(2);
-        list.add(4);
-        list.add(3);
-        Collections.reverse(list);
+        LinkedList<String> linkedList2= new LinkedList<>();
+        linkedList1.add("Java");
+        linkedList1.add("Js");
+        linkedList1.add("Ruby");
 
-        
+        //LinkedList<String> linkedList = compare_two_linked_lists(linkedList1,linkedList2);
+        System.out.println(linkedList1.get(0).equals(linkedList2.get(0)));
+
+
+
 
 
 
