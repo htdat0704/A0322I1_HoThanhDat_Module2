@@ -13,8 +13,9 @@ public class TestMyList {
         myLists.add(6);
         myLists.add(7);
         myLists.add(8);
+        myLists.add(10);
+        myLists.add(9);
         System.out.println(myLists);
-        //myLists.remove(0);
         myLists.add(2,2323);
         System.out.println(myLists);
         MyList<Integer> newList =myLists.clone();

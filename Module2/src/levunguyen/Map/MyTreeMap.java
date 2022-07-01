@@ -14,8 +14,9 @@ public class MyTreeMap {
         myTreeMap.put(2,"two");
         myTreeMap.put(1,"one");
         myTreeMap.put(3,"three");
+        System.out.println(myTreeMap.size());
 //      get(): truy cập phần tử
-        System.out.println(myTreeMap.get(4));
+        System.out.println(myTreeMap.get(myTreeMap.size()));
 //      put(): cập nhật lại giá trị của key
         myTreeMap.put(2,"new value");
         System.out.println(myTreeMap.get(2));
@@ -25,5 +26,9 @@ public class MyTreeMap {
         for(Map.Entry<Integer, String> entry:myTreeMap.entrySet()){
             System.out.println(entry.getKey() + " " + entry.getValue());
         }
+        for(Map.Entry<Integer, String> entry:myTreeMap.entrySet()){
+            System.out.println(entry.getKey() + " " + entry.getValue());
+        }
+
     }
 }
