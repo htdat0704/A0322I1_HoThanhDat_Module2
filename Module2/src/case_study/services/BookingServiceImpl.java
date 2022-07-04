@@ -1,4 +1,4 @@
-package case_study.task1.services;
+package case_study.services;
 
 public class BookingServiceImpl implements IBookingService {
 }

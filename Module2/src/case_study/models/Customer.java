@@ -1,4 +1,4 @@
-package case_study.task1.models;
+package case_study.models;
 
 public class Customer extends Person {
     private String typeOfGuest;
@@ -37,9 +37,15 @@ public class Customer extends Person {
 
     @Override
     public String toString() {
-        return super.toString()+
-                "Customer{" +
-                "typeOfGuest='" + typeOfGuest + '\'' +
+        return "|| Customer{" +
+                "code='" + super.getCode() + '\'' +
+                ", name='" + super.getName() + '\'' +
+                ", dateOfBirth='" + super.getDateOfBirth() + '\'' +
+                ", gender=" + super.getGender() +
+                ", CMND='" + super.getCMND() + '\'' +
+                ", SDT=" + super.getSDT() +
+                ", email='" + super.getEmail() + '\'' +
+                ", typeOfGuest='" + typeOfGuest + '\'' +
                 ", address='" + address + '\'' +
                 '}';
     }

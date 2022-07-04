@@ -1,7 +1,9 @@
-package case_study.task1.controllers;
+package case_study.controllers;
 
-import case_study.task1.models.Employee;
-import case_study.task1.services.EmployeeServiceImpl;
+import case_study.models.Customer;
+import case_study.models.Employee;
+import case_study.services.CustomerServiceImpl;
+import case_study.services.EmployeeServiceImpl;
 import java.util.*;
 
 import java.util.Scanner;
@@ -86,6 +88,7 @@ public class FuramaController {
         Scanner scanner = new Scanner(System.in);
         Scanner scannerString = new Scanner(System.in);
         EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
+        CustomerServiceImpl customerService = new CustomerServiceImpl();
         switch (choseMenu){
             case 1:
                 do{
@@ -97,40 +100,76 @@ public class FuramaController {
                         employeeService.addEmployee(newEmployee);
                     }else if(choseMenuAfter == 3){
                         System.out.println("Enter ID for Employee want Edit: ");
-                        int poisitionArrayList = scanner.nextInt();
-                        if(poisitionArrayList >= employeeService.sizeEmployee()){
-                            System.out.println("No infor about Employee have ID "+poisitionArrayList);
-                            break;
+                        int positionList = scanner.nextInt();
+                        if(positionList >= employeeService.sizeEmployee()){
+                            System.out.println("No infor about Employee have ID "+positionList);
+                        }else{
+                            Employee employeeEdit = employeeService.getEmployee(positionList);
+                            int choseMenuEdit =-1;
+                            do{
+                                System.out.println("Infor about employee in position "+positionList+ " is:");
+                                System.out.println(employeeEdit.toString());
+                                System.out.println("Chose on Menu Edit Employee  :");
+                                System.out.println("1.\tChange the employee in ID "+positionList+" to the new employee");
+                                System.out.println("2.\tChange properties in ID "+positionList);
+                                System.out.println("3.\tReturn Employee menu");
+                                choseMenuEdit = scanner.nextInt();
+                                switch (choseMenuEdit){
+                                    case 1:
+                                        Employee newEmployee = enterNewEmployee(scanner, scannerString);
+                                        employeeService.editEmployee(positionList,newEmployee);
+                                        break;
+                                    case 2:
+                                        int choseMenuEditAfter = -1;
+                                        do{
+                                            choseMenuEditAfter = getChoseMenuEditEmployee(scanner, positionList, employeeEdit);
+                                            chosePropertiesEditEmployee(scanner, scannerString, employeeEdit, choseMenuEditAfter);
+                                        }while (choseMenuEditAfter != 11);
+                                }
+                            }while (choseMenuEdit != 3);
                         }
-                        Employee employeeEdit = employeeService.getEmployee(poisitionArrayList);
-                        int choseMenuEdit =-1;
-                        do{
-                            System.out.println("Infor about employee in position "+poisitionArrayList+ " is:");
-                            System.out.println(employeeEdit.toString());
-                            System.out.println("Chose on Menu Edit Employee  :");
-                            System.out.println("1.\tChange the employee in ID "+poisitionArrayList+" to the new employee");
-                            System.out.println("2.\tChange properties in ID "+poisitionArrayList);
-                            System.out.println("3.\tReturn Employee menu");
-                            choseMenuEdit = scanner.nextInt();
-                            switch (choseMenuEdit){
-                                case 1:
-                                    Employee newEmployee = enterNewEmployee(scanner, scannerString);
-                                    employeeService.editEmployee(poisitionArrayList,newEmployee);
-                                    break;
-                                case 2:
-                                    int choseMenuEditAfter = -1;
-                                    do{
-                                        choseMenuEditAfter = getChoseMenuEditEmployee(scanner, poisitionArrayList, employeeEdit);
-                                        chosePropertiesEditEmployee(scanner, scannerString, employeeEdit, choseMenuEditAfter);
-                                    }while (choseMenuEditAfter != 11);
-                            }
-                        }while (choseMenuEdit != 3);
                     }
                 }while (choseMenuAfter != 4);
                 break;
             case 2:
                 do{
                     choseMenuAfter = customerManagement();
+                    if(choseMenuAfter == 1){
+                        customerService.showCustomer();
+                    }else if(choseMenuAfter == 2){
+                        Customer newCustomer = enterNewCustomer(scanner, scannerString);
+                        customerService.addCustomer(newCustomer);
+                    }else if(choseMenuAfter == 3){
+                        System.out.println("Enter ID for Customer want Edit: ");
+                        int positionList = scanner.nextInt();
+                        if(positionList >= employeeService.sizeEmployee()){
+                            System.out.println("No infor about Customer have ID "+positionList);
+                        }else{
+                            Customer customerEdit = customerService.getCustomer(positionList);
+                            int choseMenuEdit =-1;
+                            do{
+                                System.out.println("Infor about customer in position "+positionList+ " is:");
+                                System.out.println(customerEdit.toString());
+                                System.out.println("Chose on Menu Edit Customer  :");
+                                System.out.println("1.\tChange the Customer in ID "+positionList+" to the new employee");
+                                System.out.println("2.\tChange properties in ID "+positionList);
+                                System.out.println("3.\tReturn Customer menu");
+                                choseMenuEdit = scanner.nextInt();
+                                switch (choseMenuEdit){
+                                    case 1:
+                                        Customer newCustomer = enterNewCustomer(scanner, scannerString);
+                                        customerService.editCustomer(positionList,newCustomer);
+                                        break;
+                                    case 2:
+                                        int choseMenuEditAfter = -1;
+                                        do{
+                                            choseMenuEditAfter = getChoseMenuEditCustomer(scanner, positionList, customerEdit);
+                                            chosePropertiesEditCustomer(scanner, scannerString, customerEdit, choseMenuEditAfter);
+                                        }while (choseMenuEditAfter != 10);
+                                }
+                            }while (choseMenuEdit != 3);
+                        }
+                    }
                 }while (choseMenuAfter != 4);
                 break;
             case 3:
@@ -176,6 +215,28 @@ public class FuramaController {
         System.out.println("Enter salary for new Employee : ");
         double salary = scanner.nextDouble();
         return new Employee(code,name,date,gender,cmnd,SDT,email,level,position,salary);
+    }
+
+    public static Customer enterNewCustomer(Scanner scanner, Scanner scannerString) {
+        System.out.println("Enter code for new Customer: ");
+        String code = scannerString.nextLine();
+        System.out.println("Enter name for new Customer: ");
+        String name = scannerString.nextLine();
+        System.out.println("Enter Date of birth for new Customer: ");
+        String date = scannerString.nextLine();
+        System.out.println("Enter CMND for new Customer : ");
+        String cmnd = scannerString.nextLine();
+        System.out.println("Enter email for new Customer : ");
+        String email = scannerString.nextLine();
+        System.out.println("Enter type of Guest for new Customer : ");
+        String typeOfGuest = scannerString.nextLine();
+        System.out.println("Enter address for new Customer : ");
+        String address = scannerString.nextLine();
+        System.out.println("Enter gender for new Customer (true: man / false: women) : ");
+        boolean gender = scannerString.nextBoolean();
+        System.out.println("Enter SDT for new Customer : ");
+        int SDT = scanner.nextInt();
+        return new Customer(code,name,date,gender,cmnd,SDT,email,typeOfGuest,address);
     }
 
     public static void chosePropertiesEditEmployee(Scanner scanner, Scanner scannerString, Employee employeeEdit, int choseMenuEdit) {
@@ -233,6 +294,56 @@ public class FuramaController {
         }
     }
 
+    public static void chosePropertiesEditCustomer(Scanner scanner, Scanner scannerString, Customer customerEdit, int choseMenuEdit) {
+        switch (choseMenuEdit){
+            case 1:
+                System.out.println("Enter name for new Customer: ");
+                String name = scannerString.nextLine();
+                customerEdit.setName(name);
+                break;
+            case 2:
+                System.out.println("Enter code for new Customer: ");
+                String code = scannerString.nextLine();
+                customerEdit.setCode(code);
+                break;
+            case 3:
+                System.out.println("Enter Date of birth for new Customer: ");
+                String date = scannerString.nextLine();
+                customerEdit.setDateOfBirth(date);
+                break;
+            case 5:
+                System.out.println("Enter CMND for new Customer : ");
+                String cmnd = scannerString.nextLine();
+                customerEdit.setCMND(cmnd);
+                break;
+            case 4:
+                System.out.println("Enter gender for new Customer (true: man / false: women) : ");
+                boolean gender = scanner.nextBoolean();
+                customerEdit.setGender(gender);
+                break;
+            case 6:
+                System.out.println("Enter SDT for new Customer : ");
+                int SDT = scanner.nextInt();
+                customerEdit.setSDT(SDT);
+                break;
+            case 7:
+                System.out.println("Enter email for new Customer : ");
+                String email = scannerString.nextLine();
+                customerEdit.setEmail(email);
+                break;
+            case 8:
+                System.out.println("Enter type of guest for new Customer : ");
+                String typeOfGuest = scannerString.nextLine();
+                customerEdit.setTypeOfGuest(typeOfGuest);
+                break;
+            case 9:
+                System.out.println("Enter address for new Customer : ");
+                String address = scannerString.nextLine();
+                customerEdit.setAddress(address);
+                break;
+        }
+    }
+
     public static int getChoseMenuEditEmployee(Scanner scanner, int poisitionArrayList, Employee employeeEdit) {
         int choseMenuEdit;
         System.out.println("Chose on Menu Edit Employee "+poisitionArrayList+": ");
@@ -247,6 +358,23 @@ public class FuramaController {
         System.out.println("9\tEdit position ("+employeeEdit.getPosition()+")");
         System.out.println("10\tEdit salary ("+employeeEdit.getSalary()+")");
         System.out.println("11\tReturn main menu");
+        choseMenuEdit = scanner.nextInt();
+        return choseMenuEdit;
+    }
+
+    public static int getChoseMenuEditCustomer(Scanner scanner, int poisitionArrayList, Customer customerEdit) {
+        int choseMenuEdit;
+        System.out.println("Chose on Menu Edit Customer "+poisitionArrayList+": ");
+        System.out.println("1\tEdit name ("+customerEdit.getName()+")");
+        System.out.println("2\tEdit code ("+customerEdit.getCode()+")");
+        System.out.println("3\tEdit date ("+customerEdit.getDateOfBirth()+")");
+        System.out.println("4\tEdit gender ("+customerEdit.getGender()+")");
+        System.out.println("5\tEdit cmnd ("+customerEdit.getCMND()+")");
+        System.out.println("6\tEdit SDT ("+customerEdit.getSDT()+")");
+        System.out.println("7\tEdit email ("+customerEdit.getEmail()+")");
+        System.out.println("8\tEdit type of guest ("+customerEdit.getTypeOfGuest()+")");
+        System.out.println("9\tEdit address ("+customerEdit.getAddress()+")");
+        System.out.println("10\tReturn main menu");
         choseMenuEdit = scanner.nextInt();
         return choseMenuEdit;
     }

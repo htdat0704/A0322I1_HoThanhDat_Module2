@@ -1,4 +1,4 @@
-package case_study.task1.models;
+package case_study.models;
 
 public abstract class Person {
     private String code;

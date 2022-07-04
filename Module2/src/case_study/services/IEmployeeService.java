@@ -1,6 +1,6 @@
-package case_study.task1.services;
+package case_study.services;
 
-import case_study.task1.models.Employee;
+import case_study.models.Employee;
 
 public interface IEmployeeService extends IService{
 
@@ -15,4 +15,5 @@ public interface IEmployeeService extends IService{
     void editEmployee(int index, String code, String name, String dateOfBirth, boolean gender, String CMND,
                       int SDT, String email, String level, String position, double salary);
     void editEmployee(int index, Employee e);
+
 }

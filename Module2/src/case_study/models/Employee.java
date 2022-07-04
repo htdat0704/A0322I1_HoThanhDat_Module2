@@ -1,4 +1,4 @@
-package case_study.task1.models;
+package case_study.models;
 
 public class Employee extends Person {
     private String level;
@@ -48,7 +48,7 @@ public class Employee extends Person {
 
     @Override
     public String toString() {
-        return "Employee{" +
+        return "|| Employee{" +
                 "code='" + super.getCode() + '\'' +
                 ", name='" + super.getName() + '\'' +
                 ", dateOfBirth='" + super.getDateOfBirth() + '\'' +
