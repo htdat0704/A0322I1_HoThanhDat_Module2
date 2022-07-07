@@ -1,8 +1,9 @@
-package case_study.services;
+package case_study.repository;
+
 
 import case_study.models.Facility;
 
-public interface IFacilityService extends IService{
+public interface FacilityRepository {
 
     void addNewFacility(Facility facility);
 

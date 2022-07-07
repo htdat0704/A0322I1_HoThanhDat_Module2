@@ -12,10 +12,10 @@ public class Convert10To2 {
         int decimal = scanner.nextInt();
         int temp = decimal;
 
-        while (temp != 0){
+        do{
             stack.push(temp%2);
             temp /= 2;
-        }
+        }while (temp!= 0);
 
         System.out.println("Số thập phân "+decimal+" chuyển qua hệ nhị phân là :");
         while (!stack.empty()){
