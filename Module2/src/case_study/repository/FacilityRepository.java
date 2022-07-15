@@ -1,6 +1,7 @@
 package case_study.repository;
 
 
+import case_study.models.Booking;
 import case_study.models.Facility;
 
 public interface FacilityRepository {
@@ -16,5 +17,6 @@ public interface FacilityRepository {
     int sizeFacility();
 
     void displayListFacilityMaintenance();
+
 
 }
