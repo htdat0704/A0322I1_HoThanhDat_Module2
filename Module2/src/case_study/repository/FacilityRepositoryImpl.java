@@ -1,34 +1,34 @@
 package case_study.repository;
 
-import case_study.models.Facility;
-import case_study.models.House;
-import case_study.models.Room;
-import case_study.models.Villa;
+import case_study.models.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class FacilityRepositoryImpl implements FacilityRepository {
 
-    private Map<Facility,Integer> facilityMap = new LinkedHashMap<>();
+    public static Map<Facility,Integer> facilityMap = new LinkedHashMap<>();
     public static Room room ;
     public static Room room2 ;
     public static House house ;
 
     static {
-        room = new Room("nameService", 6, 4, 6, "no");
-        room2 = new Room("nameService", 64, 4, 6, "no");
-        house = new House("nameService", 64, 4, 6, "34",3);
+        room = new Room("nameService1", 6, 4, 6, "no");
+        room2 = new Room("nameService2", 64, 4, 6, "no");
+        house = new House("nameService3", 64, 4, 6, "34",3);
     }
 
-    public FacilityRepositoryImpl(Map<Facility, Integer> facilityMap) {
-        this.facilityMap = facilityMap;
+    static {
+        facilityMap.put(room,1);
+        facilityMap.put(room2,5);
+        facilityMap.put(house,1);
+    }
+
+    public Map<Facility, Integer> getFacilityMap() {
+        return facilityMap;
     }
 
     public FacilityRepositoryImpl() {
-        this.facilityMap.put(room,1);
-        this.facilityMap.put(room2,5);
-        this.facilityMap.put(house,1);
     }
 
     @Override
@@ -105,6 +105,16 @@ public class FacilityRepositoryImpl implements FacilityRepository {
             }
         }else{
             System.out.println("No Facility Maintenance");
+        }
+    }
+
+    public static void editUseFacility(Booking booking) {
+        for(Facility facilityKey : facilityMap.keySet()){
+            if(facilityKey.getNameService().equals(booking.getNameService())){
+                facilityMap.put(facilityKey,(facilityMap.get(facilityKey)+1));
+                System.out.println(facilityMap +" "+ facilityMap.get(facilityKey));
+                break;
+            }
         }
     }
 

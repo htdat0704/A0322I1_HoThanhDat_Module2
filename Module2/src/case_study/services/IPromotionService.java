@@ -2,7 +2,7 @@ package case_study.services;
 
 import java.util.Scanner;
 
-public interface PromotionService {
+public interface IPromotionService {
 
     void displayListCustomerUseServiceByYear(Scanner scanner);
 

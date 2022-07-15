@@ -1,10 +1,10 @@
 package ss12_thuat_toan_tim_kiem.bai_tap.tim_nhi_phan;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
+import java.util.*;
 
 public class RecursionBinarySearch {
-    static int[] list = {2, 4, 7, 10, 11, 45, 50, 59, 60, 66, 69, 70, 79};
+    static int[] list = {2, 4, 7, 11, 12, 50, 59, 60, 70};
 
     public int binarySearch(int arr[], int value,int left, int right){
         int mid = (left + right)/2;
@@ -28,6 +28,7 @@ public class RecursionBinarySearch {
         RecursionBinarySearch binarySearch = new RecursionBinarySearch();
         System.out.println(binarySearch.binarySearch(RecursionBinarySearch.list,
                 48,0,RecursionBinarySearch.list.length));
+
     }
 
 }

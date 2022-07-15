@@ -1,14 +1,16 @@
 package case_study.models;
 
-public class Booking {
+import java.time.LocalDate;
+
+public class Booking implements Comparable<Booking>{
     private String codeBooking;
-    private String startDay;
-    private String endDay;
+    private LocalDate startDay;
+    private LocalDate endDay;
     private String codeCustomer;
     private String nameService;
     private String kindService;
 
-    public Booking(String codeBooking, String startDay, String endDay,
+    public Booking(String codeBooking, LocalDate startDay, LocalDate endDay,
                    String codeCustomer, String nameService, String kindService) {
         this.codeBooking = codeBooking;
         this.startDay = startDay;
@@ -28,19 +30,19 @@ public class Booking {
         this.codeBooking = codeBooking;
     }
 
-    public String getStartDay() {
+    public LocalDate getStartDay() {
         return startDay;
     }
 
-    public void setStartDay(String startDay) {
+    public void setStartDay(LocalDate startDay) {
         this.startDay = startDay;
     }
 
-    public String getEndDay() {
+    public LocalDate getEndDay() {
         return endDay;
     }
 
-    public void setEndDay(String endDay) {
+    public void setEndDay(LocalDate endDay) {
         this.endDay = endDay;
     }
 
@@ -78,5 +80,14 @@ public class Booking {
                 ", nameService='" + nameService + '\'' +
                 ", kindService='" + kindService + '\'' +
                 '}';
+    }
+
+
+    @Override
+    public int compareTo(Booking o) {
+        if (this.startDay.equals(o.getStartDay())) {
+            return this.endDay.compareTo(o.getEndDay());
+        }
+        return this.startDay.compareTo(o.getStartDay());
     }
 }

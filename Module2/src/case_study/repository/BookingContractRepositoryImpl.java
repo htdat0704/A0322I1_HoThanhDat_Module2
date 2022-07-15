@@ -2,41 +2,61 @@ package case_study.repository;
 
 import case_study.models.Booking;
 import case_study.models.Contract;
+import case_study.models.Facility;
 
+import java.time.LocalDate;
 import java.util.*;
 
-public class BookingRepositoryImpl implements BookingRepository{
+public class BookingContractRepositoryImpl implements BookingContractRepository {
 
-    private Set<Booking> bookingTreeSet = new TreeSet<>();
-    Booking booking1 = new Booking("1123",12,14,
-            "1111","nameService2","Room");
-    Booking booking2 = new Booking("11234",10,14,
-            "wwww","nameService1","Room");
-    Booking booking3 = new Booking("112345",10,12,
-            "1111","nameService1","Room");
-    Booking booking4 = new Booking("11",1,10,
-            "wwww","nameService1","Room");
-    Contract contract1 = new Contract("123","112345",
+    private static Set<Booking> bookingTreeSet = new TreeSet<>();
+    public static Booking booking1 = new Booking("1123", LocalDate.of(2020, 1, 8),
+            LocalDate.of(2020, 1, 9), "1111","nameService2","Room");
+    public static Booking booking2 = new Booking("11234",LocalDate.of(2020, 1, 8),
+            LocalDate.of(2020, 3, 8), "wwww","nameService1","Room");
+    public static Booking booking3 = new Booking("112345",LocalDate.of(2020, 1, 8),
+            LocalDate.of(2020, 1, 28), "1111","nameService1","Room");
+    public static Booking booking4 = new Booking("11",LocalDate.of(2021, 1, 18),
+            LocalDate.of(2021, 1, 20), "22222","nameService1","Room");
+    public static Booking booking5 = new Booking("11",LocalDate.of(2022, 7, 18),
+            LocalDate.of(2022, 7, 22), "22222","nameService1","Room");
+    public static Booking booking6 = new Booking("11",LocalDate.of(2022, 7, 10),
+            LocalDate.of(2022, 7, 18), "22222","nameService1","Room");
+    public static Booking booking7 = new Booking("11",LocalDate.of(2022, 7, 17),
+            LocalDate.of(2022, 7, 19), "1111","nameService1","Room");
+    public static Booking booking8 = new Booking("11",LocalDate.of(2022, 7, 15),
+            LocalDate.of(2022, 7, 21), "22222","nameService1","Room");
+    public static Contract contract1 = new Contract("123","112345",
             1123,2000,"1111");
 
+    private static List<Contract> contracts = new ArrayList<>();
 
-    private List<Contract> contracts = new ArrayList<>();
-    {
+    private  static  Queue<Booking> queueTreeSet = new LinkedList<>();
+
+    static {
+        bookingTreeSet.add(booking1);
+        bookingTreeSet.add(booking2);
+        bookingTreeSet.add(booking3);
+        bookingTreeSet.add(booking4);
+        bookingTreeSet.add(booking5);
+        bookingTreeSet.add(booking6);
+        bookingTreeSet.add(booking7);
+        bookingTreeSet.add(booking8);
         contracts.add(contract1);
     }
 
-    private Queue<Booking> queueTreeSet = new LinkedList<>();
 
-    public Queue<Booking> getQueueTreeSet() {
+
+    public static Queue<Booking> getQueueTreeSet() {
         return queueTreeSet;
     }
 
+    public static Set<Booking> getBookingTreeSet() {
+        return bookingTreeSet;
+    }
 
-    public BookingRepositoryImpl() {
-        this.addNewBooking(booking1);
-        this.addNewBooking(booking2);
-        this.addNewBooking(booking3);
-        this.addNewBooking(booking4);
+
+    public BookingContractRepositoryImpl() {
         addQueueBooking();
     }
 
@@ -63,6 +83,7 @@ public class BookingRepositoryImpl implements BookingRepository{
 
     @Override
     public void addNewBooking(Booking booking) {
+        FacilityRepositoryImpl.editUseFacility(booking);
         bookingTreeSet.add(booking);
         addQueueBooking();
     }
@@ -110,10 +131,8 @@ public class BookingRepositoryImpl implements BookingRepository{
 
     }
 
-    public static void main(String[] args) {
-        BookingRepositoryImpl bookingRepository = new BookingRepositoryImpl();
-        System.out.println(bookingRepository.queueTreeSet.size());
-        System.out.println(bookingRepository.sizeContracts());
-
-    }
+//    public static void main(String[] args) {
+//        BookingContractRepositoryImpl bookingContractRepository = new BookingContractRepositoryImpl();
+//        bookingContractRepository.displayListBooking();
+//    }
 }

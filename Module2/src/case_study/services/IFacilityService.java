@@ -1,5 +1,6 @@
 package case_study.services;
 
+import case_study.models.Booking;
 import case_study.models.Facility;
 
 public interface IFacilityService extends IService{

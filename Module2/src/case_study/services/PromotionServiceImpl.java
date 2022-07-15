@@ -1,12 +1,14 @@
-package case_study.repository;
+package case_study.services;
 
 import case_study.models.Booking;
 import case_study.models.Customer;
+import case_study.repository.BookingContractRepositoryImpl;
+import case_study.repository.CustomerRepositoryImpl;
 
 import java.time.LocalDate;
 import java.util.*;
 
-public class PromotionServiceImpl implements PromotionService{
+public class PromotionServiceImpl implements IPromotionService {
 
     private static Set<String> customersList = new LinkedHashSet<>();
     private static Set<Booking> bookingQueue =  BookingContractRepositoryImpl.getBookingTreeSet();
@@ -93,10 +95,10 @@ public class PromotionServiceImpl implements PromotionService{
         }
     }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        PromotionServiceImpl e = new PromotionServiceImpl();
-       // e.displayListCustomerUseServiceByYear(scanner);
-        e.displayListCustomerGetVoucher(scanner);
-    }
+//    public static void main(String[] args) {
+//        Scanner scanner = new Scanner(System.in);
+//        PromotionServiceImpl e = new PromotionServiceImpl();
+//       // e.displayListCustomerUseServiceByYear(scanner);
+//        e.displayListCustomerGetVoucher(scanner);
+//    }
 }

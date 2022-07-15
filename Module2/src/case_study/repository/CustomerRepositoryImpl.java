@@ -26,6 +26,10 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     public CustomerRepositoryImpl(){
     }
 
+    public static LinkedList<Customer> getListCustomer() {
+        return customerList;
+    }
+
     @Override
     public Customer getCustomer(int index) {
         return customerList.get(index);

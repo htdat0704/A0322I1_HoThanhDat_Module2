@@ -45,4 +45,5 @@ public class House extends Facility{
                 ", floors=" + floors +
                 '}';
     }
+
 }

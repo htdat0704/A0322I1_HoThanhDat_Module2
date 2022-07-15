@@ -1,13 +1,13 @@
 package case_study.models;
 
 public class Contract {
-    private int numberContract;
+    private String numberContract;
     private String codeBooking;
     private double advanceDepositAmount;
     private double totalPaymentAmount;
     private String codeCustomer;
 
-    public Contract(int numberContract, String codeBooking, double advanceDepositAmount,
+    public Contract(String numberContract, String codeBooking, double advanceDepositAmount,
                     double totalPaymentAmount, String codeCustomer) {
         this.numberContract = numberContract;
         this.codeBooking = codeBooking;
@@ -19,11 +19,11 @@ public class Contract {
     public Contract() {
     }
 
-    public int getNumberContract() {
+    public String getNumberContract() {
         return numberContract;
     }
 
-    public void setNumberContract(int numberContract) {
+    public void setNumberContract(String numberContract) {
         this.numberContract = numberContract;
     }
 

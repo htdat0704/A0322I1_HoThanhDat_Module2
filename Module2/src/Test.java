@@ -1,6 +1,9 @@
+import java.time.LocalDate;
 import java.util.*;
 
+
 public class Test {
+
 
     public static LinkedList<String> compare_two_linked_lists (LinkedList<String> linkedList1,LinkedList<String> linkedList2) {
         int loop = Math.max(linkedList1.size(), linkedList2.size());
@@ -16,25 +19,15 @@ public class Test {
     }
 
     public static void main(String args[]) {
-
-        LinkedList<String> linkedList1 = new LinkedList<>();
-        linkedList1.add("Java");
-        linkedList1.add("PHP");
-        linkedList1.add("Python");
-        linkedList1.add("Ruby");
-
-        LinkedList<String> linkedList2= new LinkedList<>();
-        linkedList1.add("Java");
-        linkedList1.add("Js");
-        linkedList1.add("Ruby");
-
-        //LinkedList<String> linkedList = compare_two_linked_lists(linkedList1,linkedList2);
-        System.out.println(linkedList1.get(0).equals(linkedList2.get(0)));
+        Map<String,Integer> map = new LinkedHashMap<>();
+        map.put("ab",2);
+        map.put(new String("ab"),3);
+        map.put(new String("abc"),34);
 
 
-
-
-
+        for (String strings: map.keySet()){
+            System.out.println(map.get(strings));
+        }
 
 
     }

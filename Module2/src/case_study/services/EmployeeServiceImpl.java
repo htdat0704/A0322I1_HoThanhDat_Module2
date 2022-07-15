@@ -43,6 +43,7 @@ public class EmployeeServiceImpl implements IEmployeeService{
                 gender, CMND, SDT, email, level, position, salary);
     }
 
+    @Override
     public void editEmployee(int index, Employee e){
         repository.editEmployee(index, e);
     }

@@ -1,11 +1,9 @@
 package case_study.controllers;
 
 import case_study.models.*;
-import case_study.services.CustomerServiceImpl;
-import case_study.services.EmployeeServiceImpl;
-import case_study.services.FacilityServiceImpl;
-import case_study.services.IFacilityService;
+import case_study.services.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import java.util.Scanner;
@@ -21,7 +19,7 @@ public class FuramaController {
         System.out.println("4.\tBooking Management");
         System.out.println("5.\tPromotion Management");
         System.out.println("6.\tExit");
-        int chose = scanner.nextInt();
+        int chose = Integer.parseInt(scanner.nextLine());
         return chose;
     }
 
@@ -32,7 +30,7 @@ public class FuramaController {
         System.out.println("2\tAdd new employee");
         System.out.println("3\tEdit employee");
         System.out.println("4\tReturn main menu");
-        int chose = scanner.nextInt();
+        int chose = Integer.parseInt(scanner.nextLine());
         return chose;
     }
 
@@ -42,7 +40,7 @@ public class FuramaController {
         System.out.println("2.\tAdd new customer");
         System.out.println("3.\tEdit customer");
         System.out.println("4.\tReturn main menu");
-        int chose = scanner.nextInt();
+        int chose = Integer.parseInt(scanner.nextLine());
         return chose;
     }
 
@@ -53,7 +51,7 @@ public class FuramaController {
         System.out.println("3\tEdit facility");
         System.out.println("4\tDisplay list facility maintenance");
         System.out.println("5\tReturn main menu");
-        int chose = scanner.nextInt();
+        int chose = Integer.parseInt(scanner.nextLine());
         return chose;
     }
 
@@ -65,7 +63,7 @@ public class FuramaController {
         System.out.println("4.\tDisplay list contracts");
         System.out.println("5.\tEdit contracts");
         System.out.println("6.\tReturn main menu");
-        int chose = scanner.nextInt();
+        int chose = Integer.parseInt(scanner.nextLine());
         return chose;
     }
 
@@ -74,12 +72,12 @@ public class FuramaController {
         System.out.println("1.\tDisplay list customers use service");
         System.out.println("2.\tDisplay list customers get voucher");
         System.out.println("3.\tReturn main menu");
-        int chose = scanner.nextInt();
+        int chose = Integer.parseInt(scanner.nextLine());
         return chose;
     }
 
     public static void main(String[] args) {
-        int choseMenu, choseMenuAfter = -1;
+        int choseMenu;
         do {
             choseMenu = displayMainMenu();
             choseMenu(choseMenu);
@@ -90,93 +88,48 @@ public class FuramaController {
         int choseMenuAfter = -1;
         Scanner scanner = new Scanner(System.in);
         Scanner scannerString = new Scanner(System.in);
-        EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
-        CustomerServiceImpl customerService = new CustomerServiceImpl();
+        IEmployeeService employeeService = new EmployeeServiceImpl();
+        ICustomerService customerService = new CustomerServiceImpl();
+        IFacilityService facilityService = new FacilityServiceImpl();
+        IBookingService bookingService = new BookingServiceImpl();
+        IContactService contractService = new ContractServiceImpl();
+        IPromotionService promotionService = new PromotionServiceImpl();
         switch (choseMenu){
             case 1:
                 do{
                     choseMenuAfter = employeeManagement();
-                    if(choseMenuAfter == 1){
-                        employeeService.showEmployee();
-                    }else if(choseMenuAfter == 2){
-                        Employee newEmployee = enterNewEmployee(scanner, scannerString);
-                        employeeService.addEmployee(newEmployee);
-                    }else if(choseMenuAfter == 3){
-                        System.out.println("Enter ID for Employee want Edit: ");
-                        int positionList = scanner.nextInt();
-                        if(positionList >= employeeService.sizeEmployee()){
-                            System.out.println("No infor about Employee have ID "+positionList);
-                        }else{
-                            Employee employeeEdit = employeeService.getEmployee(positionList);
-                            int choseMenuEdit =-1;
-                            do{
-                                System.out.println("Infor about employee in position "+positionList+ " is:");
-                                System.out.println(employeeEdit.toString());
-                                System.out.println("Chose on Menu Edit Employee  :");
-                                System.out.println("1.\tChange the employee in ID "+positionList+" to the new employee");
-                                System.out.println("2.\tChange properties in ID "+positionList);
-                                System.out.println("3.\tReturn Employee menu");
-                                choseMenuEdit = scanner.nextInt();
-                                switch (choseMenuEdit){
-                                    case 1:
-                                        Employee newEmployee = enterNewEmployee(scanner, scannerString);
-                                        employeeService.editEmployee(positionList,newEmployee);
-                                        break;
-                                    case 2:
-                                        int choseMenuEditAfter = -1;
-                                        do{
-                                            choseMenuEditAfter = getChoseMenuEditEmployee(scanner, positionList, employeeEdit);
-                                            chosePropertiesEditEmployee(scanner, scannerString, employeeEdit, choseMenuEditAfter);
-                                        }while (choseMenuEditAfter != 11);
-                                }
-                            }while (choseMenuEdit != 3);
-                        }
+                    switch (choseMenuAfter){
+                        case 1:
+                            employeeService.showEmployee();
+                            break;
+                        case 2:
+                            Employee newEmployee = enterNewEmployee(scanner, scannerString);
+                            employeeService.addEmployee(newEmployee);
+                            break;
+                        case 3:
+                            editEmployee(scanner, scannerString, employeeService);
+                            break;
                     }
                 }while (choseMenuAfter != 4);
                 break;
             case 2:
                 do{
                     choseMenuAfter = customerManagement();
-                    if(choseMenuAfter == 1){
-                        customerService.showCustomer();
-                    }else if(choseMenuAfter == 2){
-                        Customer newCustomer = enterNewCustomer(scanner, scannerString);
-                        customerService.addCustomer(newCustomer);
-                    }else if(choseMenuAfter == 3){
-                        System.out.println("Enter ID for Customer want Edit: ");
-                        int positionList = scanner.nextInt();
-                        if(positionList >= employeeService.sizeEmployee()){
-                            System.out.println("No infor about Customer have ID "+positionList);
-                        }else{
-                            Customer customerEdit = customerService.getCustomer(positionList);
-                            int choseMenuEdit =-1;
-                            do{
-                                System.out.println("Infor about customer in position "+positionList+ " is:");
-                                System.out.println(customerEdit.toString());
-                                System.out.println("Chose on Menu Edit Customer  :");
-                                System.out.println("1.\tChange the Customer in ID "+positionList+" to the new employee");
-                                System.out.println("2.\tChange properties in ID "+positionList);
-                                System.out.println("3.\tReturn Customer menu");
-                                choseMenuEdit = scanner.nextInt();
-                                switch (choseMenuEdit){
-                                    case 1:
-                                        Customer newCustomer = enterNewCustomer(scanner, scannerString);
-                                        customerService.editCustomer(positionList,newCustomer);
-                                        break;
-                                    case 2:
-                                        int choseMenuEditAfter = -1;
-                                        do{
-                                            choseMenuEditAfter = getChoseMenuEditCustomer(scanner, positionList, customerEdit);
-                                            chosePropertiesEditCustomer(scanner, scannerString, customerEdit, choseMenuEditAfter);
-                                        }while (choseMenuEditAfter != 10);
-                                }
-                            }while (choseMenuEdit != 3);
-                        }
+                    switch (choseMenuAfter){
+                        case 1:
+                            customerService.showCustomer();
+                            break;
+                        case 2:
+                            Customer newCustomer = enterNewCustomer(scanner, scannerString);
+                            customerService.addCustomer(newCustomer);
+                            break;
+                        case 3:
+                            editCustomer(scanner, scannerString, customerService);
+                            break;
                     }
                 }while (choseMenuAfter != 4);
                 break;
             case 3:
-                IFacilityService facilityService = new FacilityServiceImpl();
                 do{
                     choseMenuAfter = facilityManagement();
                     switch (choseMenuAfter){
@@ -184,73 +137,292 @@ public class FuramaController {
                             facilityService.displayFacility();
                             break;
                         case 2:
-                            int choseServiceAddNew = 0;
-                            do{
-                                System.out.println("Chose facility want add: ");
-                                System.out.println("1.\tHouse ");
-                                System.out.println("2.\tRoom ");
-                                System.out.println("3.\tVilla ");
-                                System.out.println("4.\tReturn Customer menu");
-                                choseServiceAddNew = scanner.nextInt();
-                                switch (choseServiceAddNew){
-                                    case 1:
-                                        addNewHouseForFacility(scanner, scannerString, facilityService);
-                                        break;
-                                    case 2:
-                                        addNewRoomForFacility(scanner, scannerString, facilityService);
-                                        break;
-                                    case 3:
-                                        addNewVillaForFacility(scanner, scannerString, facilityService);
-                                        break;
-                                }
-                            }while (choseServiceAddNew != 4);
+                            addNewFacility(scanner, scannerString, facilityService);
                             break;
                         case 3:
-                            facilityService.displayFacility();
-                            int choseID = getChoseIDEditFacility(scanner, facilityService);
-                            Facility facility = facilityService.getFacility(choseID);
-                            if(facility instanceof House){
-                                House houseEdit = (House) facility;
-                                int choseMenuEditHouse = 0;
-                                do{
-                                    choseMenuEditHouse = getChoseMenuEditHouse(scanner, choseID, houseEdit);
-                                    chosePropertiesEditHouse(scanner, scannerString, houseEdit, choseMenuEditHouse);
-                                }while (choseMenuEditHouse != 7);
-                            }else if(facility instanceof Room){
-                                Room roomEdit = (Room) facility;
-                                int choseMenuEditRoom = 0;
-                                do{
-                                    choseMenuEditRoom = getChoseMenuEditRoom(scanner, choseID, roomEdit);
-                                    chosePropertiesEditRoom(scanner, scannerString, roomEdit, choseMenuEditRoom);
-                                }while (choseMenuEditRoom != 6);
-                            }else if(facility instanceof Villa){
-                                Villa villaEdit = (Villa) facility;
-                                int choseMenuEditVilla = 0;
-                                do{
-                                    choseMenuEditVilla = getChoseMenuEditVilla(scanner, choseID, villaEdit);
-                                    chosePropertiesEditVilla(scanner, scannerString, villaEdit, choseMenuEditVilla);
-                                }while (choseMenuEditVilla != 8);
-                            }
+                            editFacilityService(scanner, scannerString, facilityService);
                             break;
                         case 4:
                             facilityService.displayListFacilityMaintenance();
+                            break;
                     }
                 }while (choseMenuAfter != 5);
                 break;
             case 4:
                 do{
-                    choseMenuAfter = facilityManagement();
+                    choseMenuAfter = bookingManagerment();
+                    switch (choseMenuAfter){
+                        case 2:
+                            bookingService.displayListBooking();
+                            break;
+                        case 1:
+                            createBooking(scanner, scannerString, customerService, facilityService, bookingService);
+                            break;
+                        case 4:
+                            contractService.displayListContracts();
+                            break;
+                        case 3:
+                            createContract(scanner, scannerString, contractService);
+                            break;
+                        case 5:
+                            editContract(scanner, scannerString, contractService);
+                            break;
+                    }
                 }while (choseMenuAfter != 6);
                 break;
             case 5:
                 do {
                     choseMenuAfter = promotionManagement();
+                    switch (choseMenuAfter){
+                        case 1:
+                            promotionService.displayListCustomerUseServiceByYear(scanner);
+                            break;
+                        case 2:
+                            promotionService.displayListCustomerGetVoucher(scanner);
+                            break;
+                    }
                 }while (choseMenuAfter != 3);
                 break;
             case 6:
                 System.out.println("Out of Menu");
                 break;
         }
+    }
+
+    public static void editEmployee(Scanner scanner, Scanner scannerString, IEmployeeService employeeService) {
+        int positionList = getPositionListEmployee(scanner, employeeService);
+        int choseMenuEdit =-1;
+        do{
+            Employee employeeEdit = employeeService.getEmployee(positionList);
+            System.out.println("Infor about employee in position "+positionList+ " is:");
+            System.out.println(employeeEdit.toString());
+            System.out.println("Chose on Menu Edit Employee  :");
+            System.out.println("1.\tChange the employee in ID "+positionList+" to the new employee");
+            System.out.println("2.\tChange properties in ID "+positionList);
+            System.out.println("3.\tReturn Employee menu");
+            choseMenuEdit = Integer.parseInt(scanner.nextLine());;
+            switch (choseMenuEdit){
+                case 1:
+                    Employee newEmployee = enterNewEmployee(scanner, scannerString);
+                    employeeService.editEmployee(positionList,newEmployee);
+                    break;
+                case 2:
+                    int choseMenuEditAfter = -1;
+                    do{
+                        choseMenuEditAfter = getChoseMenuEditEmployee(scanner, positionList, employeeEdit);
+                        chosePropertiesEditEmployee(scanner, scannerString, employeeEdit, choseMenuEditAfter);
+                    }while (choseMenuEditAfter != 11);
+                    break;
+            }
+        }while (choseMenuEdit != 3);
+    }
+
+    public static int getPositionListEmployee(Scanner scanner, IEmployeeService employeeService) {
+        int positionList = -1;
+        do{
+            employeeService.showEmployee();
+            System.out.println("Enter ID for Employee want Edit: ");
+            positionList = Integer.parseInt(scanner.nextLine());
+        }while (positionList > employeeService.sizeEmployee()-1|| positionList<0);
+        return positionList;
+    }
+
+    public static int getPositionListCustomer(Scanner scanner, ICustomerService customerService) {
+        int positionList = -1;
+        do{
+            customerService.showCustomer();
+            System.out.println("Enter ID for Customer want Edit: ");
+            positionList = Integer.parseInt(scanner.nextLine());
+        }while (positionList > customerService.sizeCustomer()-1|| positionList<0);
+        return positionList;
+    }
+
+    public static void editCustomer(Scanner scanner, Scanner scannerString, ICustomerService customerService) {
+        int positionList = getPositionListCustomer(scanner, customerService);
+        int choseMenuEdit =-1;
+        do{
+            Customer customerEdit = customerService.getCustomer(positionList);
+            System.out.println("Infor about customer in position "+positionList+ " is:");
+            System.out.println(customerEdit.toString());
+            System.out.println("Chose on Menu Edit Customer  :");
+            System.out.println("1.\tChange the Customer in ID "+positionList+" to the new employee");
+            System.out.println("2.\tChange properties in ID "+positionList);
+            System.out.println("3.\tReturn Customer menu");
+            choseMenuEdit = Integer.parseInt(scanner.nextLine());
+            switch (choseMenuEdit){
+                case 1:
+                    Customer newCustomer = enterNewCustomer(scanner, scannerString);
+                    customerService.editCustomer(positionList,newCustomer);
+                    break;
+                case 2:
+                    int choseMenuEditAfter = -1;
+                    do{
+                        choseMenuEditAfter = getChoseMenuEditCustomer(scanner, positionList, customerEdit);
+                        chosePropertiesEditCustomer(scanner, scannerString, customerEdit, choseMenuEditAfter);
+                    }while (choseMenuEditAfter != 10);
+            }
+        }while (choseMenuEdit != 3);
+    }
+
+    public static void addNewFacility(Scanner scanner, Scanner scannerString, IFacilityService facilityService) {
+        int choseServiceAddNew = 0;
+        do{
+            System.out.println("Chose facility want add: ");
+            System.out.println("1.\tHouse ");
+            System.out.println("2.\tRoom ");
+            System.out.println("3.\tVilla ");
+            System.out.println("4.\tReturn Customer menu");
+            choseServiceAddNew = Integer.parseInt(scanner.nextLine());
+            switch (choseServiceAddNew){
+                case 1:
+                    addNewHouseForFacility(scanner, scannerString, facilityService);
+                    break;
+                case 2:
+                    addNewRoomForFacility(scanner, scannerString, facilityService);
+                    break;
+                case 3:
+                    addNewVillaForFacility(scanner, scannerString, facilityService);
+                    break;
+            }
+        }while (choseServiceAddNew != 4);
+    }
+
+    public static void editFacilityService(Scanner scanner, Scanner scannerString, IFacilityService facilityService) {
+        facilityService.displayFacility();
+        int choseID = getChoseIDEditFacility(scanner, facilityService);
+        Facility facility = facilityService.getFacility(choseID);
+        if(facility instanceof House){
+            House houseEdit = (House) facility;
+            int choseMenuEditHouse = 0;
+            do{
+                choseMenuEditHouse = getChoseMenuEditHouse(scanner, choseID, houseEdit);
+                chosePropertiesEditHouse(scanner, scannerString, houseEdit, choseMenuEditHouse);
+            }while (choseMenuEditHouse != 7);
+        }else if(facility instanceof Room){
+            Room roomEdit = (Room) facility;
+            int choseMenuEditRoom = 0;
+            do{
+                choseMenuEditRoom = getChoseMenuEditRoom(scanner, choseID, roomEdit);
+                chosePropertiesEditRoom(scanner, scannerString, roomEdit, choseMenuEditRoom);
+            }while (choseMenuEditRoom != 6);
+        }else if(facility instanceof Villa){
+            Villa villaEdit = (Villa) facility;
+            int choseMenuEditVilla = 0;
+            do{
+                choseMenuEditVilla = getChoseMenuEditVilla(scanner, choseID, villaEdit);
+                chosePropertiesEditVilla(scanner, scannerString, villaEdit, choseMenuEditVilla);
+            }while (choseMenuEditVilla != 8);
+        }
+    }
+
+    public static void editContract(Scanner scanner, Scanner scannerString, IContactService contractService) {
+        int idEditContract = getIdEditContract(scanner, contractService);
+        Contract contractEdit = contractService.getContract(idEditContract);
+        int inputEditContract = getInputEditContract(scanner, contractEdit);
+        choseProperiesContractEdit(scanner, scannerString, contractEdit, inputEditContract);
+    }
+
+    public static void createBooking(Scanner scanner, Scanner scannerString, ICustomerService customerService, IFacilityService facilityService, IBookingService bookingService) {
+        System.out.println("Input Booking new:");
+        System.out.println("Enter code booking for new Booking: ");
+        String codeBooking = scannerString.nextLine();
+        System.out.println("Enter start Day for new Booking : (yyyy-mm-dd) ");
+        LocalDate startDay = LocalDate.parse(scanner.nextLine());
+        System.out.println("Enter endDay for new Booking :  (yyyy-mm-dd) ");
+        LocalDate endDay = LocalDate.parse(scanner.nextLine());
+        int choseMenuAddCustomer = getChoseMenuAddCustomer(scanner, customerService);
+        String codeCustomer = customerService.getCustomer(choseMenuAddCustomer).getCode();
+        int choseMenuAddService = getChoseMenuAddService(scanner, facilityService);
+        String nameService = facilityService.getFacility(choseMenuAddService).getNameService();
+        String kindService = null;
+        if(facilityService.getFacility(choseMenuAddService) instanceof House){
+            kindService = "House";
+        }
+        if(facilityService.getFacility(choseMenuAddService) instanceof Villa){
+            kindService = "Villa";
+        }
+        if(facilityService.getFacility(choseMenuAddService) instanceof Room){
+            kindService = "Room";
+        }
+        bookingService.addNewBooking(new Booking(codeBooking, startDay,endDay,
+                codeCustomer,nameService,kindService));
+    }
+
+    public static int getChoseMenuAddService(Scanner scanner, IFacilityService facilityService) {
+        int choseMenuAddService = -1;
+        do{
+            facilityService.displayFacility();
+            choseMenuAddService = Integer.parseInt(scanner.nextLine());
+        }while (choseMenuAddService > facilityService.sizeFacility()-1 || choseMenuAddService < 0);
+        return choseMenuAddService;
+    }
+
+    public static int getChoseMenuAddCustomer(Scanner scanner, ICustomerService customerService) {
+        int choseMenuAddCustomer = -1;
+        do{
+            customerService.showCustomer();
+            choseMenuAddCustomer = Integer.parseInt(scanner.nextLine());
+        }while ((choseMenuAddCustomer > customerService.sizeCustomer()-1)||(choseMenuAddCustomer < 0));
+        return choseMenuAddCustomer;
+    }
+
+    public static void createContract(Scanner scanner, Scanner scannerString, IContactService contractService) {
+        contractService.displayListAddContracts();
+        Booking bookingAddContract = contractService.getFirstBooking();
+        System.out.println("Input Contracts for Booking :"+bookingAddContract);
+        System.out.println("Enter number Contracts for Booking ");
+        String numberContract = scannerString.nextLine();
+        System.out.println("Enter advance Deposit Amount Contracts for Booking: ");
+        double advanceDepositAmount = Double.parseDouble(scanner.nextLine());
+        System.out.println("Enter total Payment Amount Contracts for Booking : ");
+        double totalPaymentAmount = Double.parseDouble(scanner.nextLine());
+        contractService.createNewContract(new Contract(numberContract,bookingAddContract.getCodeBooking(),
+                advanceDepositAmount,totalPaymentAmount,bookingAddContract.getCodeCustomer()));
+        System.out.println(new Contract(numberContract,bookingAddContract.getCodeBooking(),
+                advanceDepositAmount,totalPaymentAmount,bookingAddContract.getCodeCustomer())+" Have been create");
+    }
+
+    public static void choseProperiesContractEdit(Scanner scanner, Scanner scannerString, Contract contractEdit, int inputEditContract) {
+        switch (inputEditContract){
+            case 1:
+                System.out.println("Enter new number Contract: ");
+                String numberContractEdit = scannerString.nextLine();
+                contractEdit.setNumberContract(numberContractEdit);
+                break;
+            case 2:
+                System.out.println("Enter new advance Deposit Amount Contract");
+                double advanceDepositAmountEdit = Double.parseDouble(scanner.nextLine());
+                contractEdit.setAdvanceDepositAmount(advanceDepositAmountEdit);
+                break;
+            case 3:
+                System.out.println("Enter new total Payment Amount Contract ");
+                double totalPaymentAmountEdit = Double.parseDouble(scanner.nextLine());
+                contractEdit.setTotalPaymentAmount(totalPaymentAmountEdit);
+                break;
+        }
+    }
+
+    public static int getInputEditContract(Scanner scanner, Contract contractEdit) {
+        int inputEditContract = -1;
+        do{
+            System.out.println("Enter properties want to Edit "+contractEdit);
+            System.out.println("1. number Contract "+contractEdit.getNumberContract());
+            System.out.println("2. advance Deposit Amount Contract "+contractEdit.getAdvanceDepositAmount());
+            System.out.println("3. total Payment Amount Contract "+contractEdit.getTotalPaymentAmount());
+            System.out.println("Enter number Contracts for Booking ");
+            inputEditContract = Integer.parseInt(scanner.nextLine());
+        }while (inputEditContract >3 || inputEditContract <0);
+        return inputEditContract;
+    }
+
+    public static int getIdEditContract(Scanner scanner, IContactService contractService) {
+        int idEditContract = -1;
+        do{
+            contractService.displayListContracts();
+            System.out.println("enter ID contract want to EDIT!!!!");
+            idEditContract = Integer.parseInt(scanner.nextLine());
+        }while ((idEditContract > contractService.sizeContracts()-1)||(idEditContract < 0));
+        return idEditContract;
     }
 
     public static void chosePropertiesEditVilla(Scanner scanner, Scanner scannerString, Villa villaEdit, int choseMenuEditVilla) {
@@ -262,17 +434,17 @@ public class FuramaController {
                 break;
             case 2:
                 System.out.println("Enter Area Use for new Villa: ");
-                double areaUse = scanner.nextDouble();
+                double areaUse = Double.parseDouble(scanner.nextLine());
                 villaEdit.setAreaUse(areaUse);
                 break;
             case 3:
                 System.out.println("Enter floors for new Villa: ");
-                int floors = scanner.nextInt();
+                int floors =Integer.parseInt(scanner.nextLine());
                 villaEdit.setFloors(floors);
                 break;
             case 4:
                 System.out.println("Enter Maximum People for new Villa : ");
-                int maximumPeople = scanner.nextInt();
+                int maximumPeople = Integer.parseInt(scanner.nextLine());
                 villaEdit.setMaximumPeople(maximumPeople);
                 break;
             case 5:
@@ -282,12 +454,12 @@ public class FuramaController {
                 break;
             case 6:
                 System.out.println("Enter Rental Cost for new Villa : ");
-                double rentalCost = scanner.nextDouble();
+                double rentalCost = Double.parseDouble(scanner.nextLine());
                 villaEdit.setRentalCost(rentalCost);
                 break;
             case 7:
                 System.out.println("Enter pool Area for new Villa : ");
-                double poolArea = scanner.nextDouble();
+                double poolArea = Double.parseDouble(scanner.nextLine());
                 villaEdit.setPoolArea(poolArea);
                 break;
         }
@@ -304,7 +476,7 @@ public class FuramaController {
         System.out.println("6\tEdit Rental Cost ("+villaEdit.getRentalCost()+")");
         System.out.println("7\tEdit Pool Area ("+villaEdit.getPoolArea()+")");
         System.out.println("8\tReturn main menu");
-        choseMenuEditVilla = scanner.nextInt();
+        choseMenuEditVilla = Integer.parseInt(scanner.nextLine());
         return choseMenuEditVilla;
     }
 
@@ -317,7 +489,7 @@ public class FuramaController {
                 break;
             case 2:
                 System.out.println("Enter Area Use for new Room: ");
-                double areaUse = scanner.nextDouble();
+                double areaUse = Double.parseDouble(scanner.nextLine());
                 roomEdit.setAreaUse(areaUse);
                 break;
             case 3:
@@ -327,12 +499,12 @@ public class FuramaController {
                 break;
             case 4:
                 System.out.println("Enter Maximum People for new Room : ");
-                int maximumPeople = scanner.nextInt();
+                int maximumPeople = Integer.parseInt(scanner.nextLine());
                 roomEdit.setMaximumPeople(maximumPeople);
                 break;
             case 5:
                 System.out.println("Enter Rental Cost for new Room : ");
-                double rentalCost = scanner.nextDouble();
+                double rentalCost = Double.parseDouble(scanner.nextLine());
                 roomEdit.setRentalCost(rentalCost);
                 break;
         }
@@ -347,7 +519,7 @@ public class FuramaController {
         System.out.println("4\tEdit Maximum People ("+roomEdit.getMaximumPeople()+")");
         System.out.println("5\tEdit Rental Cost ("+roomEdit.getRentalCost()+")");
         System.out.println("6\tReturn main menu");
-        choseMenuEditRoom = scanner.nextInt();
+        choseMenuEditRoom = Integer.parseInt(scanner.nextLine());
         return choseMenuEditRoom;
     }
 
@@ -356,12 +528,12 @@ public class FuramaController {
         do{
             System.out.println("Chose "+facilityService.sizeFacility()+" to exit");
             System.out.println("Chose ID you want to edit:");
-            choseID = scanner.nextInt();
+            choseID = Integer.parseInt(scanner.nextLine());
             Facility facility = facilityService.getFacility(choseID);
             if(facility==null){
                 System.out.println("Chose "+facilityService.sizeFacility()+" to exit");
                 System.out.println("Chose ID again to edit:");
-                choseID = scanner.nextInt();
+                choseID = Integer.parseInt(scanner.nextLine());
             }
         }while (choseID == facilityService.sizeFacility());
         return choseID;
@@ -376,17 +548,17 @@ public class FuramaController {
                 break;
             case 2:
                 System.out.println("Enter Area Use for new House: ");
-                double areaUse = scanner.nextDouble();
+                double areaUse = Double.parseDouble(scanner.nextLine());
                 houseEdit.setAreaUse(areaUse);
                 break;
             case 3:
                 System.out.println("Enter floors for new House: ");
-                int floors = scanner.nextInt();
+                int floors = Integer.parseInt(scanner.nextLine());
                 houseEdit.setFloors(floors);
                 break;
             case 4:
                 System.out.println("Enter Maximum People for new House : ");
-                int maximumPeople = scanner.nextInt();
+                int maximumPeople = Integer.parseInt(scanner.nextLine());
                 houseEdit.setMaximumPeople(maximumPeople);
                 break;
             case 5:
@@ -396,7 +568,7 @@ public class FuramaController {
                 break;
             case 6:
                 System.out.println("Enter Rental Cost for new House : ");
-                double rentalCost = scanner.nextDouble();
+                double rentalCost = Double.parseDouble(scanner.nextLine());
                 houseEdit.setRentalCost(rentalCost);
                 break;
         }
@@ -412,7 +584,7 @@ public class FuramaController {
         System.out.println("5\tEdit Standard Room ("+houseEdit.getStandardRoom()+")");
         System.out.println("6\tEdit Rental Cost ("+houseEdit.getRentalCost()+")");
         System.out.println("7\tReturn main menu");
-        choseMenuEditHouse = scanner.nextInt();
+        choseMenuEditHouse = Integer.parseInt(scanner.nextLine());
         return choseMenuEditHouse;
     }
 
@@ -422,15 +594,15 @@ public class FuramaController {
         System.out.println("Enter standardRoom for new Villa: ");
         String standardRoom = scannerString.nextLine();
         System.out.println("Enter area Use for new Villa: ");
-        double areaUse = scanner.nextDouble();
+        double areaUse = Double.parseDouble(scanner.nextLine());
         System.out.println("Enter rental Cost for new Villa : ");
-        double rentalCost = scanner.nextDouble();
+        double rentalCost = Double.parseDouble(scanner.nextLine());
         System.out.println("Enter pool Area for new Villa : ");
-        double poolArea = scanner.nextDouble();
+        double poolArea = Double.parseDouble(scanner.nextLine());
         System.out.println("Enter floors for new Villa : ");
-        int floors = scanner.nextInt();
+        int floors = Integer.parseInt(scanner.nextLine());
         System.out.println("Enter maximum People for new Villa : ");
-        int maximumPeople = scanner.nextInt();
+        int maximumPeople = Integer.parseInt(scanner.nextLine());
         facilityService.addNewFacility(new Villa(nameService, areaUse,  rentalCost,
                 maximumPeople,  standardRoom, poolArea, floors));
     }
@@ -441,11 +613,11 @@ public class FuramaController {
         System.out.println("Enter free Serivice for new Room: ");
         String freeSerivice = scannerString.nextLine();
         System.out.println("Enter area Use for new Room: ");
-        double areaUse = scanner.nextDouble();
+        double areaUse = Double.parseDouble(scanner.nextLine());
         System.out.println("Enter rental Cost for new Room : ");
-        double rentalCost = scanner.nextDouble();
+        double rentalCost = Double.parseDouble(scanner.nextLine());
         System.out.println("Enter maximum People for new Room : ");
-        int maximumPeople = scanner.nextInt();
+        int maximumPeople = Integer.parseInt(scanner.nextLine());
         facilityService.addNewFacility(new Room(nameService, areaUse,  rentalCost, maximumPeople,  freeSerivice));
     }
 
@@ -455,13 +627,13 @@ public class FuramaController {
         System.out.println("Enter standardRoom for new House: ");
         String standardRoom = scannerString.nextLine();
         System.out.println("Enter area Use for new House: ");
-        double areaUse = scanner.nextDouble();
+        double areaUse = Double.parseDouble(scanner.nextLine());
         System.out.println("Enter rental Cost for new House : ");
-        double rentalCost = scanner.nextDouble();
+        double rentalCost = Double.parseDouble(scanner.nextLine());
         System.out.println("Enter floors for new House : ");
-        int floors = scanner.nextInt();
+        int floors = Integer.parseInt(scanner.nextLine());
         System.out.println("Enter maximum People for new House : ");
-        int maximumPeople = scanner.nextInt();
+        int maximumPeople = Integer.parseInt(scanner.nextLine());
         facilityService.addNewFacility(new House(nameService, areaUse,  rentalCost
                 , maximumPeople,  standardRoom,  floors));
     }
@@ -482,11 +654,11 @@ public class FuramaController {
         System.out.println("Enter position for new Employee : ");
         String position = scannerString.nextLine();
         System.out.println("Enter gender for new Employee (true: man / false: women) : ");
-        boolean gender = scannerString.nextBoolean();
+        boolean gender = Boolean.parseBoolean(scannerString.nextLine());
         System.out.println("Enter SDT for new Employee : ");
-        int SDT = scanner.nextInt();
+        int SDT =  Integer.parseInt(scanner.nextLine());
         System.out.println("Enter salary for new Employee : ");
-        double salary = scanner.nextDouble();
+        double salary = Double.parseDouble(scanner.nextLine());
         return new Employee(code,name,date,gender,cmnd,SDT,email,level,position,salary);
     }
 
@@ -506,9 +678,9 @@ public class FuramaController {
         System.out.println("Enter address for new Customer : ");
         String address = scannerString.nextLine();
         System.out.println("Enter gender for new Customer (true: man / false: women) : ");
-        boolean gender = scannerString.nextBoolean();
+        boolean gender = Boolean.parseBoolean(scannerString.nextLine());
         System.out.println("Enter SDT for new Customer : ");
-        int SDT = scanner.nextInt();
+        int SDT = Integer.parseInt(scanner.nextLine());
         return new Customer(code,name,date,gender,cmnd,SDT,email,typeOfGuest,address);
     }
 
@@ -536,12 +708,12 @@ public class FuramaController {
                 break;
             case 4:
                 System.out.println("Enter gender for new Employee (true: man / false: women) : ");
-                boolean gender = scanner.nextBoolean();
+                boolean gender = Boolean.parseBoolean(scannerString.nextLine());
                 employeeEdit.setGender(gender);
                 break;
             case 6:
                 System.out.println("Enter SDT for new Employee : ");
-                int SDT = scanner.nextInt();
+                int SDT = Integer.parseInt(scanner.nextLine());
                 employeeEdit.setSDT(SDT);
                 break;
             case 7:
@@ -561,7 +733,7 @@ public class FuramaController {
                 break;
             case 10:
                 System.out.println("Enter salary for new Employee : ");
-                double salary = scanner.nextDouble();
+                double salary = Double.parseDouble(scanner.nextLine());
                 employeeEdit.setSalary(salary);
                 break;
         }
@@ -591,12 +763,12 @@ public class FuramaController {
                 break;
             case 4:
                 System.out.println("Enter gender for new Customer (true: man / false: women) : ");
-                boolean gender = scanner.nextBoolean();
+                boolean gender = Boolean.parseBoolean(scannerString.nextLine());
                 customerEdit.setGender(gender);
                 break;
             case 6:
                 System.out.println("Enter SDT for new Customer : ");
-                int SDT = scanner.nextInt();
+                int SDT = Integer.parseInt(scanner.nextLine());
                 customerEdit.setSDT(SDT);
                 break;
             case 7:
@@ -631,7 +803,7 @@ public class FuramaController {
         System.out.println("9\tEdit position ("+employeeEdit.getPosition()+")");
         System.out.println("10\tEdit salary ("+employeeEdit.getSalary()+")");
         System.out.println("11\tReturn main menu");
-        choseMenuEdit = scanner.nextInt();
+        choseMenuEdit = Integer.parseInt(scanner.nextLine());
         return choseMenuEdit;
     }
 
@@ -648,7 +820,7 @@ public class FuramaController {
         System.out.println("8\tEdit type of guest ("+customerEdit.getTypeOfGuest()+")");
         System.out.println("9\tEdit address ("+customerEdit.getAddress()+")");
         System.out.println("10\tReturn main menu");
-        choseMenuEdit = scanner.nextInt();
+        choseMenuEdit = Integer.parseInt(scanner.nextLine());
         return choseMenuEdit;
     }
 }
