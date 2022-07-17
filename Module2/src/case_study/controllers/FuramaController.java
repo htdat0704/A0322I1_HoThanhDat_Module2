@@ -2,6 +2,7 @@ package case_study.controllers;
 
 import case_study.models.*;
 import case_study.services.*;
+import case_study.utils.Validate;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -94,6 +95,7 @@ public class FuramaController {
         IBookingService bookingService = new BookingServiceImpl();
         IContactService contractService = new ContractServiceImpl();
         IPromotionService promotionService = new PromotionServiceImpl();
+        Validate validate = new Validate();
         switch (choseMenu){
             case 1:
                 do{
@@ -137,10 +139,10 @@ public class FuramaController {
                             facilityService.displayFacility();
                             break;
                         case 2:
-                            addNewFacility(scanner, scannerString, facilityService);
+                            addNewFacility(scanner, scannerString, facilityService, validate);
                             break;
                         case 3:
-                            editFacilityService(scanner, scannerString, facilityService);
+                            editFacilityService(scanner, scannerString, facilityService, validate);
                             break;
                         case 4:
                             facilityService.displayListFacilityMaintenance();
@@ -264,7 +266,7 @@ public class FuramaController {
         }while (choseMenuEdit != 3);
     }
 
-    public static void addNewFacility(Scanner scanner, Scanner scannerString, IFacilityService facilityService) {
+    public static void addNewFacility(Scanner scanner, Scanner scannerString, IFacilityService facilityService, Validate validate) {
         int choseServiceAddNew = 0;
         do{
             System.out.println("Chose facility want add: ");
@@ -275,19 +277,19 @@ public class FuramaController {
             choseServiceAddNew = Integer.parseInt(scanner.nextLine());
             switch (choseServiceAddNew){
                 case 1:
-                    addNewHouseForFacility(scanner, scannerString, facilityService);
+                    addNewHouseForFacility(scanner, scannerString, facilityService, validate);
                     break;
                 case 2:
-                    addNewRoomForFacility(scanner, scannerString, facilityService);
+                    addNewRoomForFacility(scanner, scannerString, facilityService, validate);
                     break;
                 case 3:
-                    addNewVillaForFacility(scanner, scannerString, facilityService);
+                    addNewVillaForFacility(scanner, scannerString, facilityService, validate);
                     break;
             }
         }while (choseServiceAddNew != 4);
     }
 
-    public static void editFacilityService(Scanner scanner, Scanner scannerString, IFacilityService facilityService) {
+    public static void editFacilityService(Scanner scanner, Scanner scannerString, IFacilityService facilityService, Validate validate) {
         facilityService.displayFacility();
         int choseID = getChoseIDEditFacility(scanner, facilityService);
         Facility facility = facilityService.getFacility(choseID);
@@ -296,21 +298,21 @@ public class FuramaController {
             int choseMenuEditHouse = 0;
             do{
                 choseMenuEditHouse = getChoseMenuEditHouse(scanner, choseID, houseEdit);
-                chosePropertiesEditHouse(scanner, scannerString, houseEdit, choseMenuEditHouse);
+                chosePropertiesEditHouse(scanner, scannerString, houseEdit, choseMenuEditHouse, validate);
             }while (choseMenuEditHouse != 7);
         }else if(facility instanceof Room){
             Room roomEdit = (Room) facility;
             int choseMenuEditRoom = 0;
             do{
                 choseMenuEditRoom = getChoseMenuEditRoom(scanner, choseID, roomEdit);
-                chosePropertiesEditRoom(scanner, scannerString, roomEdit, choseMenuEditRoom);
+                chosePropertiesEditRoom(scanner, scannerString, roomEdit, choseMenuEditRoom, validate);
             }while (choseMenuEditRoom != 6);
         }else if(facility instanceof Villa){
             Villa villaEdit = (Villa) facility;
             int choseMenuEditVilla = 0;
             do{
                 choseMenuEditVilla = getChoseMenuEditVilla(scanner, choseID, villaEdit);
-                chosePropertiesEditVilla(scanner, scannerString, villaEdit, choseMenuEditVilla);
+                chosePropertiesEditVilla(scanner, scannerString, villaEdit, choseMenuEditVilla, validate);
             }while (choseMenuEditVilla != 8);
         }
     }
@@ -425,16 +427,22 @@ public class FuramaController {
         return idEditContract;
     }
 
-    public static void chosePropertiesEditVilla(Scanner scanner, Scanner scannerString, Villa villaEdit, int choseMenuEditVilla) {
+    public static void chosePropertiesEditVilla(Scanner scanner, Scanner scannerString, Villa villaEdit, int choseMenuEditVilla,Validate validate) {
         switch (choseMenuEditVilla){
             case 1:
-                System.out.println("Enter Name Service for new Villa: ");
-                String nameService = scannerString.nextLine();
-                villaEdit.setNameService(nameService);
+                int numberNameService = -1;
+                do{
+                    System.out.println("Edit number XXXX in SVVL-XXXX for new VILLA: ");
+                    numberNameService = Integer.parseInt(scanner.nextLine());
+                }while (validate.validateNameService(numberNameService));
+                String nameService = "SVVL-" + validate.standardizedNameService(numberNameService);
                 break;
             case 2:
-                System.out.println("Enter Area Use for new Villa: ");
-                double areaUse = Double.parseDouble(scanner.nextLine());
+                double areaUse =-1;
+                do{
+                    System.out.println("Enter Area Use for new Villa: ");
+                    areaUse = Double.parseDouble(scanner.nextLine());
+                }while (validate.areaPoolAndUse(areaUse));
                 villaEdit.setAreaUse(areaUse);
                 break;
             case 3:
@@ -443,23 +451,35 @@ public class FuramaController {
                 villaEdit.setFloors(floors);
                 break;
             case 4:
-                System.out.println("Enter Maximum People for new Villa : ");
-                int maximumPeople = Integer.parseInt(scanner.nextLine());
+                int maximumPeople =-1;
+                do{
+                    System.out.println("Enter maximum people for new Villa: ");
+                    maximumPeople = Integer.parseInt(scanner.nextLine());
+                }while (validate.areaPoolAndUse(maximumPeople));
                 villaEdit.setMaximumPeople(maximumPeople);
                 break;
             case 5:
-                System.out.println("Enter Standard Room for new Villa: ");
-                String sRoom = scannerString.nextLine();
+                String sRoom;
+                do{
+                    System.out.println("Enter standard Room for new Villa: ");
+                    sRoom = scanner.nextLine();
+                }while (validate.checkPascalCaseString(sRoom));
                 villaEdit.setStandardRoom(sRoom);
                 break;
             case 6:
-                System.out.println("Enter Rental Cost for new Villa : ");
-                double rentalCost = Double.parseDouble(scanner.nextLine());
+                double rentalCost =-1;
+                do{
+                    System.out.println("Enter rental cost for new Villa: ");
+                    rentalCost = Double.parseDouble(scanner.nextLine());
+                }while (validate.rentalCostPostive(rentalCost));
                 villaEdit.setRentalCost(rentalCost);
                 break;
             case 7:
-                System.out.println("Enter pool Area for new Villa : ");
-                double poolArea = Double.parseDouble(scanner.nextLine());
+                double poolArea=-1;
+                do{
+                    System.out.println("Enter Pool (m2) for new Villa: ");
+                    poolArea = Double.parseDouble(scanner.nextLine());
+                }while (validate.areaPoolAndUse(poolArea));
                 villaEdit.setPoolArea(poolArea);
                 break;
         }
@@ -480,16 +500,23 @@ public class FuramaController {
         return choseMenuEditVilla;
     }
 
-    public static void chosePropertiesEditRoom(Scanner scanner, Scanner scannerString, Room roomEdit, int choseMenuEditRoom) {
+    public static void chosePropertiesEditRoom(Scanner scanner, Scanner scannerString, Room roomEdit, int choseMenuEditRoom, Validate validate) {
         switch (choseMenuEditRoom){
             case 1:
-                System.out.println("Enter Name Service for new Room: ");
-                String nameService = scannerString.nextLine();
+                int numberNameService =-1;
+                do{
+                    System.out.println("Edit number XXXX in SVRO-XXXX for new ROOM: ");
+                    numberNameService = Integer.parseInt(scanner.nextLine());
+                }while (validate.validateNameService(numberNameService));
+                String nameService = "SVRO-" + validate.standardizedNameService(numberNameService);
                 roomEdit.setNameService(nameService);
                 break;
             case 2:
-                System.out.println("Enter Area Use for new Room: ");
-                double areaUse = Double.parseDouble(scanner.nextLine());
+                double areaUse=-1;
+                do{
+                    System.out.println("Enter Area Use for new Room: ");
+                    areaUse = Double.parseDouble(scanner.nextLine());
+                }while (validate.areaPoolAndUse(areaUse));
                 roomEdit.setAreaUse(areaUse);
                 break;
             case 3:
@@ -498,13 +525,19 @@ public class FuramaController {
                 roomEdit.setFreeService(freeService);
                 break;
             case 4:
-                System.out.println("Enter Maximum People for new Room : ");
-                int maximumPeople = Integer.parseInt(scanner.nextLine());
+                int maximumPeople=-1;
+                do{
+                    System.out.println("Enter maximum people for new Room: ");
+                    maximumPeople = Integer.parseInt(scanner.nextLine());
+                }while (validate.areaPoolAndUse(maximumPeople));
                 roomEdit.setMaximumPeople(maximumPeople);
                 break;
             case 5:
-                System.out.println("Enter Rental Cost for new Room : ");
-                double rentalCost = Double.parseDouble(scanner.nextLine());
+                double rentalCost=-1;
+                do{
+                    System.out.println("Enter rental cost for new Room: ");
+                    rentalCost = Double.parseDouble(scanner.nextLine());
+                }while (validate.rentalCostPostive(rentalCost));
                 roomEdit.setRentalCost(rentalCost);
                 break;
         }
@@ -539,16 +572,23 @@ public class FuramaController {
         return choseID;
     }
 
-    public static void chosePropertiesEditHouse(Scanner scanner, Scanner scannerString, House houseEdit, int choseMenuEditHouse) {
+    public static void chosePropertiesEditHouse(Scanner scanner, Scanner scannerString, House houseEdit, int choseMenuEditHouse, Validate validate) {
         switch (choseMenuEditHouse){
             case 1:
-                System.out.println("Enter Name Service for new House: ");
-                String nameService = scannerString.nextLine();
+                int numberNameService=-1;
+                do{
+                    System.out.println("Edit number XXXX in SVHO-XXXX for new House: ");
+                    numberNameService = Integer.parseInt(scanner.nextLine());
+                }while (validate.validateNameService(numberNameService));
+                String nameService = "SVHO-" + validate.standardizedNameService(numberNameService);
                 houseEdit.setNameService(nameService);
                 break;
             case 2:
-                System.out.println("Enter Area Use for new House: ");
-                double areaUse = Double.parseDouble(scanner.nextLine());
+                double areaUse=-1;
+                do{
+                    System.out.println("Enter Area Use for new House: ");
+                    areaUse = Double.parseDouble(scanner.nextLine());
+                }while (validate.areaPoolAndUse(areaUse));
                 houseEdit.setAreaUse(areaUse);
                 break;
             case 3:
@@ -557,18 +597,27 @@ public class FuramaController {
                 houseEdit.setFloors(floors);
                 break;
             case 4:
-                System.out.println("Enter Maximum People for new House : ");
-                int maximumPeople = Integer.parseInt(scanner.nextLine());
+                int maximumPeople=-1;
+                do{
+                    System.out.println("Enter maximum people for new House: ");
+                    maximumPeople = Integer.parseInt(scanner.nextLine());
+                }while (validate.areaPoolAndUse(maximumPeople));
                 houseEdit.setMaximumPeople(maximumPeople);
                 break;
             case 5:
-                System.out.println("Enter Standard Room for new House: ");
-                String sRoom = scannerString.nextLine();
+                String sRoom;
+                do{
+                    System.out.println("Enter standard Room for new House: ");
+                    sRoom = scanner.nextLine();
+                }while (validate.checkPascalCaseString(sRoom));
                 houseEdit.setStandardRoom(sRoom);
                 break;
             case 6:
-                System.out.println("Enter Rental Cost for new House : ");
-                double rentalCost = Double.parseDouble(scanner.nextLine());
+                double rentalCost=-1;
+                do{
+                    System.out.println("Enter rental cost for new House: ");
+                    rentalCost = Double.parseDouble(scanner.nextLine());
+                }while (validate.rentalCostPostive(rentalCost));
                 houseEdit.setRentalCost(rentalCost);
                 break;
         }
@@ -588,52 +637,105 @@ public class FuramaController {
         return choseMenuEditHouse;
     }
 
-    public static void addNewVillaForFacility(Scanner scanner, Scanner scannerString, IFacilityService facilityService) {
-        System.out.println("Enter nameService for new Villa: ");
-        String nameService = scannerString.nextLine();
-        System.out.println("Enter standardRoom for new Villa: ");
-        String standardRoom = scannerString.nextLine();
-        System.out.println("Enter area Use for new Villa: ");
-        double areaUse = Double.parseDouble(scanner.nextLine());
-        System.out.println("Enter rental Cost for new Villa : ");
-        double rentalCost = Double.parseDouble(scanner.nextLine());
-        System.out.println("Enter pool Area for new Villa : ");
-        double poolArea = Double.parseDouble(scanner.nextLine());
+    public static void addNewVillaForFacility(Scanner scanner, Scanner scannerString, IFacilityService facilityService,Validate validate) {
+        int numberNameService=-1;
+        int maximumPeople=-1;
+        double rentalCost=-1;
+        double areaUse=-1;
+        String standardRoom;
+        String nameService;
+        double poolArea=-1;
+        int floors= 1;
+        do{
+            System.out.println("Enter number XXXX in SVVL-XXXX for new Villa: ");
+            numberNameService = Integer.parseInt(scanner.nextLine());
+        }while (validate.validateNameService(numberNameService));
+        nameService = "SVVL-" + validate.standardizedNameService(numberNameService);
+        do{
+            System.out.println("Enter standard Room for new Villa: ");
+            standardRoom = scanner.nextLine();
+        }while (validate.checkPascalCaseString(standardRoom));
+        do{
+            System.out.println("Enter area Use (m2) for new Villa: ");
+            areaUse = Double.parseDouble(scanner.nextLine());
+        }while (validate.areaPoolAndUse(areaUse));
+        do{
+            System.out.println("Enter rental cost for new Villa: ");
+            rentalCost = Double.parseDouble(scanner.nextLine());
+        }while (validate.rentalCostPostive(rentalCost));
+        do{
+            System.out.println("Enter Pool (m2) for new Villa: ");
+            poolArea = Double.parseDouble(scanner.nextLine());
+        }while (validate.areaPoolAndUse(poolArea));
         System.out.println("Enter floors for new Villa : ");
-        int floors = Integer.parseInt(scanner.nextLine());
-        System.out.println("Enter maximum People for new Villa : ");
-        int maximumPeople = Integer.parseInt(scanner.nextLine());
+        floors = Integer.parseInt(scanner.nextLine());
+        do{
+            System.out.println("Enter maximum people for new Villa: ");
+            maximumPeople = Integer.parseInt(scanner.nextLine());
+        }while (validate.areaPoolAndUse(maximumPeople));
         facilityService.addNewFacility(new Villa(nameService, areaUse,  rentalCost,
                 maximumPeople,  standardRoom, poolArea, floors));
     }
 
-    public static void addNewRoomForFacility(Scanner scanner, Scanner scannerString, IFacilityService facilityService) {
-        System.out.println("Enter nameService for new Room: ");
-        String nameService = scannerString.nextLine();
+    public static void addNewRoomForFacility(Scanner scanner, Scanner scannerString, IFacilityService facilityService,Validate validate) {
+        int numberNameService=-1;
+        int maximumPeople=-1;
+        double rentalCost=-1;
+        double areaUse=-1;
+        String nameService;
+        do{
+            System.out.println("Enter number XXXX in SVRO-XXXX for new Room: ");
+            numberNameService = Integer.parseInt(scanner.nextLine());
+        }while (validate.validateNameService(numberNameService));
+        nameService = "SVRO-" + validate.standardizedNameService(numberNameService);
         System.out.println("Enter free Serivice for new Room: ");
         String freeSerivice = scannerString.nextLine();
-        System.out.println("Enter area Use for new Room: ");
-        double areaUse = Double.parseDouble(scanner.nextLine());
-        System.out.println("Enter rental Cost for new Room : ");
-        double rentalCost = Double.parseDouble(scanner.nextLine());
-        System.out.println("Enter maximum People for new Room : ");
-        int maximumPeople = Integer.parseInt(scanner.nextLine());
+        do{
+            System.out.println("Enter area Use (m2) for new Room: ");
+            areaUse = Double.parseDouble(scanner.nextLine());
+        }while (validate.areaPoolAndUse(areaUse));
+        do{
+            System.out.println("Enter rental cost for new Room: ");
+            rentalCost = Double.parseDouble(scanner.nextLine());
+        }while (validate.rentalCostPostive(rentalCost));
+        do{
+            System.out.println("Enter maximum people for new Room: ");
+            maximumPeople = Integer.parseInt(scanner.nextLine());
+        }while (validate.areaPoolAndUse(maximumPeople));
         facilityService.addNewFacility(new Room(nameService, areaUse,  rentalCost, maximumPeople,  freeSerivice));
     }
 
-    public static void addNewHouseForFacility(Scanner scanner, Scanner scannerString, IFacilityService facilityService) {
-        System.out.println("Enter nameService for new House: ");
-        String nameService = scannerString.nextLine();
-        System.out.println("Enter standardRoom for new House: ");
-        String standardRoom = scannerString.nextLine();
-        System.out.println("Enter area Use for new House: ");
-        double areaUse = Double.parseDouble(scanner.nextLine());
-        System.out.println("Enter rental Cost for new House : ");
-        double rentalCost = Double.parseDouble(scanner.nextLine());
-        System.out.println("Enter floors for new House : ");
-        int floors = Integer.parseInt(scanner.nextLine());
-        System.out.println("Enter maximum People for new House : ");
-        int maximumPeople = Integer.parseInt(scanner.nextLine());
+    public static void addNewHouseForFacility(Scanner scanner, Scanner scannerString, IFacilityService facilityService,Validate validate) {
+        int numberNameService=-1;
+        int maximumPeople=-1;
+        double rentalCost=-1;
+        double areaUse=-1;
+        String standardRoom;
+        String nameService;
+        int floors= 1;
+        do{
+            System.out.println("Enter number XXXX in SVHO-XXXX for new House: ");
+            numberNameService = Integer.parseInt(scanner.nextLine());
+        }while (validate.validateNameService(numberNameService));
+        nameService = "SVHO-" + validate.standardizedNameService(numberNameService);
+        do{
+            System.out.println("Enter standard Room for new House: ");
+            standardRoom = scanner.nextLine();
+        }while (validate.checkPascalCaseString(standardRoom));
+        do{
+            System.out.println("Enter area Use (m2) for new House: ");
+            areaUse = Double.parseDouble(scanner.nextLine());
+        }while (validate.areaPoolAndUse(areaUse));
+        do{
+            System.out.println("Enter rental cost for new House: ");
+            rentalCost = Double.parseDouble(scanner.nextLine());
+        }while (validate.rentalCostPostive(rentalCost));
+        System.out.println("Enter floors for new House");
+        floors = Integer.parseInt(scanner.nextLine());
+        do{
+            System.out.println("Enter maximum people for new House: ");
+            maximumPeople = Integer.parseInt(scanner.nextLine());
+        }while (validate.areaPoolAndUse(maximumPeople));
         facilityService.addNewFacility(new House(nameService, areaUse,  rentalCost
                 , maximumPeople,  standardRoom,  floors));
     }
