@@ -4,4 +4,8 @@ public class IllegalTriangleExceptionTask  extends  Exception{
     IllegalTriangleExceptionTask(String s){
         super(s);
     }
+
+    IllegalTriangleExceptionTask(String message,Throwable throwable, String status){
+        super(message,throwable);
+    }
 }
