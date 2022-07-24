@@ -78,11 +78,16 @@ public class FuramaController {
     }
 
     public static void main(String[] args) {
-        int choseMenu;
+        int choseMenu = -1;
         do {
-            choseMenu = displayMainMenu();
-            choseMenu(choseMenu);
+            try{
+                choseMenu = displayMainMenu();
+                choseMenu(choseMenu);
+            }catch (Exception e){
+                System.out.println("Error " +e);
+            }
         }while (choseMenu != 6);
+
     }
 
     public static void choseMenu(int choseMenu) {
@@ -99,89 +104,110 @@ public class FuramaController {
         switch (choseMenu){
             case 1:
                 do{
-                    choseMenuAfter = employeeManagement();
-                    switch (choseMenuAfter){
-                        case 1:
-                            employeeService.showEmployee();
-                            break;
-                        case 2:
-                            Employee newEmployee = enterNewEmployee(scanner, scannerString);
-                            employeeService.addEmployee(newEmployee);
-                            break;
-                        case 3:
-                            editEmployee(scanner, scannerString, employeeService);
-                            break;
+                    try{
+                        choseMenuAfter = employeeManagement();
+                        switch (choseMenuAfter){
+                            case 1:
+                                employeeService.showEmployee();
+                                break;
+                            case 2:
+                                Employee newEmployee = enterNewEmployee(scanner, scannerString);
+                                employeeService.addEmployee(newEmployee);
+                                break;
+                            case 3:
+                                editEmployee(scanner, scannerString, employeeService);
+                                break;
+                        }
+                    }catch (Exception e){
+                        System.out.println("Error "+e);
                     }
                 }while (choseMenuAfter != 4);
                 break;
             case 2:
                 do{
-                    choseMenuAfter = customerManagement();
-                    switch (choseMenuAfter){
-                        case 1:
-                            customerService.showCustomer();
-                            break;
-                        case 2:
-                            Customer newCustomer = enterNewCustomer(scanner, scannerString);
-                            customerService.addCustomer(newCustomer);
-                            break;
-                        case 3:
-                            editCustomer(scanner, scannerString, customerService);
-                            break;
+                    try{
+                        choseMenuAfter = customerManagement();
+                        switch (choseMenuAfter){
+                            case 1:
+                                customerService.showCustomer();
+                                break;
+                            case 2:
+                                Customer newCustomer = enterNewCustomer(scanner, scannerString);
+                                customerService.addCustomer(newCustomer);
+                                break;
+                            case 3:
+                                editCustomer(scanner, scannerString, customerService);
+                                break;
+                        }
+                    }catch (Exception e){
+                        System.out.println("Error "+e);
                     }
                 }while (choseMenuAfter != 4);
                 break;
             case 3:
                 do{
-                    choseMenuAfter = facilityManagement();
-                    switch (choseMenuAfter){
-                        case 1:
-                            facilityService.displayFacility();
-                            break;
-                        case 2:
-                            addNewFacility(scanner, scannerString, facilityService, validate);
-                            break;
-                        case 3:
-                            editFacilityService(scanner, scannerString, facilityService, validate);
-                            break;
-                        case 4:
-                            facilityService.displayListFacilityMaintenance();
-                            break;
+                    try{
+                        choseMenuAfter = facilityManagement();
+                        switch (choseMenuAfter){
+                            case 1:
+                                facilityService.displayFacility();
+                                break;
+                            case 2:
+                                addNewFacility(scanner, scannerString, facilityService, validate);
+                                break;
+                            case 3:
+                                editFacilityService(scanner, scannerString, facilityService, validate);
+                                break;
+                            case 4:
+                                facilityService.displayListFacilityMaintenance();
+                                break;
+                        }
+                    }catch (Exception e){
+                        System.out.println("Error "+e);
                     }
                 }while (choseMenuAfter != 5);
                 break;
             case 4:
                 do{
-                    choseMenuAfter = bookingManagerment();
-                    switch (choseMenuAfter){
-                        case 2:
-                            bookingService.displayListBooking();
-                            break;
-                        case 1:
-                            createBooking(scanner, scannerString, customerService, facilityService, bookingService);
-                            break;
-                        case 4:
-                            contractService.displayListContracts();
-                            break;
-                        case 3:
-                            createContract(scanner, scannerString, contractService);
-                            break;
-                        case 5:
-                            editContract(scanner, scannerString, contractService);
-                            break;
+                    try{
+                        choseMenuAfter = bookingManagerment();
+                        switch (choseMenuAfter){
+                            case 2:
+                                bookingService.displayListBooking();
+                                break;
+                            case 1:
+                                createBooking(scanner, scannerString, customerService, facilityService, bookingService);
+                                break;
+                            case 4:
+                                contractService.displayListContracts();
+                                break;
+                            case 3:
+                                createContract(scanner, scannerString, contractService);
+                                break;
+                            case 5:
+                                editContract(scanner, scannerString, contractService);
+                                break;
+                        }
+                    }catch (Exception e){
+                        System.out.println("Err "+ e);
                     }
+
                 }while (choseMenuAfter != 6);
                 break;
             case 5:
                 do {
-                    choseMenuAfter = promotionManagement();
-                    switch (choseMenuAfter){
-                        case 1:
-                            promotionService.displayListCustomerUseServiceByYear(scanner);
-                            break;
-                        case 2:
-                            promotionService.displayListCustomerGetVoucher(scanner);
-                            break;
+                    try{
+                        choseMenuAfter = promotionManagement();
+                        switch (choseMenuAfter){
+                            case 1:
+                                promotionService.displayListCustomerUseServiceByYear(scanner);
+                                break;
+                            case 2:
+                                promotionService.displayListCustomerGetVoucher(scanner);
+                                break;
+                        }
+                    }catch (Exception err){
+                        System.out.println("Err "+err );
                     }
                 }while (choseMenuAfter != 3);
                 break;
