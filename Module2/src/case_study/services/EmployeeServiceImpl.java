@@ -4,6 +4,7 @@ import case_study.models.Employee;
 import case_study.repository.EmployeeRepository;
 import case_study.repository.EmployeeRepositoryImpl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -11,7 +12,7 @@ public class EmployeeServiceImpl implements IEmployeeService{
 
     private EmployeeRepository repository = new EmployeeRepositoryImpl();
 
-    public EmployeeServiceImpl(Employee e){
+    public EmployeeServiceImpl(Employee e) throws IOException {
         repository.addEmployee(e);
     }
 
@@ -28,7 +29,7 @@ public class EmployeeServiceImpl implements IEmployeeService{
 
     }
 
-    public void addEmployee(Employee employee){
+    public void addEmployee(Employee employee) throws IOException {
         repository.addEmployee(employee);
     }
 

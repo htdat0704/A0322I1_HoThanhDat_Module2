@@ -2,13 +2,15 @@ package case_study.repository;
 
 import case_study.models.Customer;
 
+import java.io.IOException;
+
 public interface CustomerRepository {
 
     Customer getCustomer(int index);
 
     void showCustomer();
 
-    void addCustomer(Customer c);
+    void addCustomer(Customer c) throws IOException;
 
     int sizeCustomer();
 

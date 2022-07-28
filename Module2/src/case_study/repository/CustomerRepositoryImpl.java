@@ -2,21 +2,18 @@ package case_study.repository;
 
 import case_study.models.Customer;
 
+import java.io.*;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 public class CustomerRepositoryImpl implements CustomerRepository {
 
-    private static LinkedList<Customer> customerList;
+    private static LinkedList<Customer> customerList ;
+    private static String path = "src/case_study/data/customer.csv";
 
     static {
-        customerList= new LinkedList<>();
-        customerList.add(new Customer("1111","mot","12/12/19929",true,"123456789C",
-                1145677,"abc@gmail.com","Dinamond","1223 Phung Khoang"));
-        customerList.add(new Customer("wwww","3","12/12/1999",true,"123456789C",
-                1245677,"abc@gmail.com","Dinamond","121414 Phung Khoang"));
-        customerList.add(new Customer("22222","m4ot","12/12/1999",true,"123456789C",
-                1223677,"abc@gmail.com","Dinamond","1223 Phung Khoang"));
+        customerList = (LinkedList<Customer>) readCSV();
     }
 
     public CustomerRepositoryImpl(Customer c){
@@ -46,8 +43,9 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     @Override
-    public void addCustomer(Customer c) {
+    public void addCustomer(Customer c) throws IOException {
         customerList.add(c);
+        writeCSV(c);
     }
 
     @Override
@@ -70,8 +68,59 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         editCustomer.setGender(gender);
     }
 
+    public static List<Customer> readCSV() {
+        List<Customer> customerLists = new LinkedList<>();
+        FileReader fileReader = null;
+        BufferedReader buffRead = null;
+        try {
+            fileReader = new FileReader(path);
+            buffRead = new BufferedReader(fileReader);
+            String line ;
+            String temp[];
+            Customer customer;
+
+            while ((line = buffRead.readLine()) != null) {
+                temp = line.split(",");
+                customer = new Customer(temp[0], temp[1], temp[2], Boolean.parseBoolean(temp[3]),
+                        temp[4], Integer.parseInt(temp[5]), temp[6], temp[7], temp[8]);
+                customerLists.add(customer);
+            }
+
+            buffRead.close();
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }finally {
+            return customerLists;
+        }
+
+
+
+    }
+
     @Override
     public void editCustomer(int index, Customer c) {
         customerList.set(index,c);
+    }
+
+    public static void writeCSV(Customer customer) throws IOException {
+        FileWriter fileWriter = new FileWriter(path, true);
+        BufferedWriter buffWrite = new BufferedWriter(fileWriter);
+        buffWrite.write(customer.getCode()+","+customer.getName()+","+customer.getDateOfBirth()+"" +
+                ","+customer.getGender()+","+customer.getCMND()+","+customer.getSDT()+
+                ","+customer.getEmail()+","+customer.getTypeOfGuest()+","+customer.getAddress()+"\n");
+        buffWrite.newLine();
+        buffWrite.close();
+    }
+
+    public static void main(String[] args) throws IOException {
+        CustomerRepositoryImpl customerRepository = new CustomerRepositoryImpl();
+//        customerRepository.showCustomer();
+//        Customer customer = new Customer("test413", "Hui", "12/12/1212", false,
+//                "12392382318", 123213213, "huioc@gmail.com", "Member", "12 phung");
+//        customerRepository.addCustomer(customer);
+        customerRepository.showCustomer();
     }
 }

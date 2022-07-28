@@ -4,6 +4,7 @@ import case_study.models.Customer;
 import case_study.repository.CustomerRepository;
 import case_study.repository.CustomerRepositoryImpl;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -11,7 +12,7 @@ public class CustomerServiceImpl implements ICustomerService{
 
     private CustomerRepository repository = new CustomerRepositoryImpl();
 
-    public CustomerServiceImpl(Customer customer) {
+    public CustomerServiceImpl(Customer customer) throws IOException {
         this.repository.addCustomer(customer);
     }
 
@@ -31,7 +32,7 @@ public class CustomerServiceImpl implements ICustomerService{
     }
 
     @Override
-    public void addCustomer(Customer c) {
+    public void addCustomer(Customer c) throws IOException {
         repository.addCustomer(c);
     }
 

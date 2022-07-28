@@ -2,13 +2,15 @@ package case_study.services;
 
 import case_study.models.Employee;
 
+import java.io.IOException;
+
 public interface IEmployeeService extends IService{
 
     Employee getEmployee(int index);
 
     void showEmployee();
 
-    void addEmployee(Employee employee);
+    void addEmployee(Employee employee) throws IOException;
 
     int sizeEmployee();
 
